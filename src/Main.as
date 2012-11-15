@@ -1,25 +1,13 @@
 package 
 {
-	import flash.display.Sprite;
-	import flash.events.Event;
+	import game.Gravitation;
+	import nl.jorisdormans.phantom2D.core.PhantomGame;
 	
-	/**
-	 * ...
-	 * @author Alex Rodas
-	 */
-	public class Main extends Sprite 
-	{
+	public class Main extends PhantomGame {
 		
-		public function Main():void 
-		{
-			if (stage) init();
-			else addEventListener(Event.ADDED_TO_STAGE, init);
-		}
-		
-		private function init(e:Event = null):void 
-		{
-			removeEventListener(Event.ADDED_TO_STAGE, init);
-			// entry point
+		public function Main() {
+			super(800, 600);
+			addScreen(new Gravitation(800, 600));
 		}
 		
 	}
