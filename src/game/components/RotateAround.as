@@ -9,9 +9,14 @@ package game.components
 		private var target:Vector3D;
 		private var distance:Number;
 		private var actualAngle:Number;
-		private var direction:uint; // 1 = clockwise, -1 = counterclockwise
+		private var direction:uint = 1; // 1 = clockwise, -1 = counterclockwise
 		
-		public function RotateAround(targetObject:GameObject) 
+		public function RotateAround()
+		{
+			
+		}
+		
+		public function setTarget(targetObject:GameObject):void
 		{
 			var p:GameObject = parent as GameObject;
 			this.target = targetObject.position.clone();
@@ -23,7 +28,8 @@ package game.components
 		{
 			this.actualAngle = (actualAngle + elapsedTime) % (2 * Math.PI);
 			var p:GameObject = parent as GameObject;
-			p.position = new Vector3D(target.x + distance * Math.cos(actualAngle), target.y + distance * Math.sin(actualAngle));
+			var d:Number = distance * direction;
+			p.position = new Vector3D(target.x + d * Math.cos(actualAngle), target.y + d * Math.sin(actualAngle));
 		}
 		
 	}

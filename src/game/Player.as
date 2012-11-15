@@ -14,11 +14,18 @@ package game
 	
 	public class Player extends GameObject
 	{
+		private var component:RotateAround;
+		
 		public function Player(initialPlanet:GameObject) 
 		{
 			addComponent(new BoundingCircle(16));
 			addComponent(new BoundingShapeRenderer(0xff0000));
-			addComponent(new RotateAround(initialPlanet));
+			addComponent(component = new RotateAround());
+		}
+		
+		public function rotateAroundPlanet(planet:GameObject):void
+		{
+			component.setTarget(planet);
 		}
 		
 	}
