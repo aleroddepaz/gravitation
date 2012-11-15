@@ -1,19 +1,24 @@
 package game 
 {
 	import flash.geom.Vector3D;
-	import nl.jorisdormans.phantom2D.objects.boundaries.CollideWithLayerEdge;
+	import game.components.RotateAround;
 	import nl.jorisdormans.phantom2D.objects.GameObject;
+	import nl.jorisdormans.phantom2D.particles.ParticleEmitter;
+	import nl.jorisdormans.phantom2D.objects.shapes.BoundingCircle;
+	import nl.jorisdormans.phantom2D.objects.renderers.BoundingShapeRenderer;
+	
+	import nl.jorisdormans.phantom2D.objects.boundaries.CollideWithLayerEdge;
 	import nl.jorisdormans.phantom2D.objects.misc.ArrowKeyHandler;
 	import nl.jorisdormans.phantom2D.objects.Mover;
-	import nl.jorisdormans.phantom2D.objects.renderers.BoundingShapeRenderer;
-	import nl.jorisdormans.phantom2D.objects.shapes.BoundingCircle;
+	
 	
 	public class Player extends GameObject
 	{
-		
-		public function Player() 
+		public function Player(initialPlanet:GameObject) 
 		{
-			
+			addComponent(new BoundingCircle(16));
+			addComponent(new BoundingShapeRenderer(0xff0000));
+			addComponent(new RotateAround(initialPlanet));
 		}
 		
 	}
