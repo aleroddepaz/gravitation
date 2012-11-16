@@ -16,7 +16,7 @@ package game
 		public function Gravitation(width:Number, height:Number) 
 		{
 			super(width, height);
-			addComponent(new Background(0x000000, 0x003D79, 0x000000, 60));
+			addComponent(new Background(0x525252, 0x666666, 0x525252));
 			addComponent(particleLayer = new ParticleLayer(800, 600));
 			addComponent(objectLayer = new TiledObjectLayer(32, 25, 19, 4));
 			particleLayer.sprite.filters = [new BlurFilter()];
@@ -28,7 +28,7 @@ package game
 			objectLayer.addGameObject(initialPlanet = new Planet(), new Vector3D(300, 300));
 			objectLayer.addGameObject(new Planet(), new Vector3D(300, 50));
 			objectLayer.addGameObject(new Planet(), new Vector3D(50, 300));
-			objectLayer.addGameObject(player = new Player(initialPlanet), new Vector3D(250, 250));
+			objectLayer.addGameObject(player = new Player(), new Vector3D(250, 250));
 			
 			player.rotateAroundPlanet(initialPlanet);
 		}
