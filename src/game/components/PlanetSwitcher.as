@@ -10,7 +10,7 @@ package game.components
 	public class PlanetSwitcher extends GameObjectComponent implements IInputHandler
 	{
 		private var switchDirection:Vector3D;
-		private var switchSpeed:Number = 1;
+		private var switchSpeed:Number = 1.5;
 		private var component:RotateAround;
 		
 		public function PlanetSwitcher() 

@@ -2,6 +2,7 @@ package game
 {
 	import game.components.PlanetSwitcher;
 	import game.components.RotateAround;
+	import game.components.SceneBounds;
 	import game.particles.YellowParticle;
 	import nl.jorisdormans.phantom2D.objects.GameObject;
 	import nl.jorisdormans.phantom2D.objects.renderers.BoundingShapeRenderer;
@@ -18,6 +19,7 @@ package game
 			
 			addComponent(new ParticleEmitter(YellowParticle, 20, 0, 2, 0, 0.4, 10, 0.5));
 			addComponent(new PlanetSwitcher());
+			addComponent(new SceneBounds());
 		}
 		
 		public function rotateAroundPlanet(planet:Planet):void
