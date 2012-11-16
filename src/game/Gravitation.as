@@ -24,11 +24,11 @@ package game
 			var player:Player;
 			var initialPlanet:Planet;
 			
-			objectLayer.addGameObject(new Planet(), new Vector3D(150, 150));
-			objectLayer.addGameObject(initialPlanet = new Planet(), new Vector3D(300, 300));
-			objectLayer.addGameObject(new Planet(), new Vector3D(300, 50));
-			objectLayer.addGameObject(new Planet(), new Vector3D(50, 300));
-			objectLayer.addGameObject(player = new Player(), new Vector3D(250, 250));
+			objectLayer.addGameObject(new Planet(), new Vector3D(250, 250));
+			objectLayer.addGameObject(initialPlanet = new Planet(), new Vector3D(400, 400));
+			objectLayer.addGameObject(new Planet(), new Vector3D(400, 150));
+			objectLayer.addGameObject(new Planet(), new Vector3D(150, 400));
+			objectLayer.addGameObject(player = new Player(), new Vector3D(450, 350));
 			
 			player.rotateAroundPlanet(initialPlanet);
 		}
