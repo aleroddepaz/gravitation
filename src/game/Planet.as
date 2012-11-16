@@ -13,7 +13,8 @@ package game
 		public function Planet() 
 		{
 			addComponent(new BoundingCircle(radius));
-			addComponent(new BoundingShapeRenderer(0x333333));
+			addComponent(new BoundingShapeRenderer(0x555555));
+			addComponent(new AtmosphereParticleEmitter(this.radius * 3, 0x555555));
 		}
 		
 		public function isCloseTo(playerPosition:Vector3D):Boolean

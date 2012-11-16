@@ -27,7 +27,7 @@ package game.components
 			
 			var angle:Number = 0;
 			while (angle < Math.PI * 2) {
-				angle += Math.random() * 4 + 2;
+				angle += Math.random() * 2 + 1;
 				
 				var particle:Particle = new Particle();
 				particle.color = this.color;
