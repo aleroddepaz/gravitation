@@ -13,11 +13,6 @@ package game.components
 		private var switchSpeed:Number = 1.5;
 		private var component:RotateAround;
 		
-		public function PlanetSwitcher() 
-		{
-			
-		}
-		
 		override public function start():void
 		{
 			component = gameObject.getComponentByClass(RotateAround) as RotateAround;
@@ -37,12 +32,19 @@ package game.components
 				if (component.inPlanet)
 				{
 					component.inPlanet = false;
-					switchDirection = calculateNewDirection(gameObject.position.subtract(component.target));
+					switchDirection = calculateNewDirection(gameObject.position.subtract(component.target.position));
 				}
 				else
 				{
-					var target:GameObject = calculateNewTarget();
-					if(target) component.setTarget(target);
+					var target:GameObject;
+					for each(var p:Planet in gameObject.objectLayer.getAllObjectsOfClass(Planet))
+					{
+						if (p.isCloseTo(gameObject.position)) target = p;
+					}
+					if (target)
+					{
+						component.handleMessage("rotate", target);
+					}
 				}
 			}
 		}
@@ -63,17 +65,5 @@ package game.components
 			newDirection.scaleBy(switchSpeed);
 			return newDirection;
 		}
-		
-		private function calculateNewTarget():GameObject
-		{
-			for each(var p:Planet in gameObject.objectLayer.getAllObjectsOfClass(Planet))
-			{
-				if (p.isCloseTo(gameObject.position)) return p;
-			}
-			trace("Bad!");
-			return null;
-		}
-		
 	}
-
 }

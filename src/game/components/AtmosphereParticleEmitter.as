@@ -7,7 +7,6 @@ package game.components
 	
 	public class AtmosphereParticleEmitter extends GameObjectComponent 
 	{
-		
 		private var distance:Number;
 		private var color:uint;
 		
@@ -28,11 +27,9 @@ package game.components
 			var angle:Number = 0;
 			while (angle < Math.PI * 2) {
 				angle += Math.random() * 2 + 1;
-				
 				var particle:Particle = new Particle();
 				particle.color = this.color;
 				var life:Number = 0.2 + (Math.random() - Math.random()) * 0.2;
-				
 				var position:Vector3D = gameObject.position.clone();
 				position.x += Math.cos(angle) * distance;
 				position.y += Math.sin(angle) * distance;
