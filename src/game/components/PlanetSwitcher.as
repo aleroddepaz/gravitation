@@ -2,28 +2,23 @@ package game.components
 {
 	import game.Planet;
 	import flash.geom.Vector3D;
+	import nl.jorisdormans.phantom2D.core.Composite;
 	import nl.jorisdormans.phantom2D.core.InputState;
 	import nl.jorisdormans.phantom2D.objects.IInputHandler;
 	import nl.jorisdormans.phantom2D.objects.GameObject;
 	import nl.jorisdormans.phantom2D.objects.GameObjectComponent;
+	import nl.jorisdormans.phantom2D.objects.Mover;
 	
 	public class PlanetSwitcher extends GameObjectComponent implements IInputHandler
 	{
 		private var switchDirection:Vector3D;
-		private var switchSpeed:Number = 1.5;
+		private var switchSpeed:Number = 100;
 		private var component:RotateAround;
 		
-		override public function start():void
+		override public function onAdd(composite:Composite):void
 		{
-			component = gameObject.getComponentByClass(RotateAround) as RotateAround;
-		}
-		
-		override public function update(elapsedTime:Number):void
-		{
-			if (!component.inPlanet)
-			{
-				gameObject.position = gameObject.position.add(switchDirection);
-			}
+			super.onAdd(composite);
+			component = composite.getComponentByClass(RotateAround) as RotateAround;
 		}
 		
 		public function handleInput(elapsedTime:Number, currentState:InputState, previousState:InputState):void
@@ -32,7 +27,8 @@ package game.components
 				if (component.inPlanet)
 				{
 					component.inPlanet = false;
-					switchDirection = calculateNewDirection(gameObject.position.subtract(component.target.position));
+					gameObject.mover.velocity = calculateNewDirection(gameObject.position.subtract(component.target.position));
+					trace(gameObject.mover.velocity);
 				}
 				else
 				{
@@ -43,6 +39,7 @@ package game.components
 					}
 					if (target)
 					{
+						gameObject.mover.velocity = new Vector3D(0, 0);
 						component.handleMessage("rotate", target);
 					}
 				}
@@ -55,12 +52,7 @@ package game.components
 			var tmp:Number = newDirection.x;
 			newDirection.x = newDirection.y;
 			newDirection.y = tmp;
-			
 			newDirection.y *= -1;
-			
-			//if (rotationSpeed > 0) newDirection.y *= -1;
-			//else newDirection.x *= -1;
-			
 			newDirection.normalize();
 			newDirection.scaleBy(switchSpeed);
 			return newDirection;

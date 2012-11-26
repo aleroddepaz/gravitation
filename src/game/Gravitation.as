@@ -17,7 +17,6 @@ package game
 		public static const planetColor:uint = 0x555555;
 		public static const satelliteColor:uint = 0x3B3B3B;
 		public static const pickupColor:uint = 0xffffff;
-		public static var respawnPlanet:Planet;
 		
 		public function Gravitation(width:Number, height:Number)
 		{
@@ -35,24 +34,19 @@ package game
 			objectLayer.addGameObject(planets[0] = new Planet(50, false), new Vector3D(400, 300));
 			objectLayer.addGameObject(planets[1] = new Planet(), new Vector3D(400, 150));
 			objectLayer.addGameObject(planets[2] = new Planet(), new Vector3D(460, 440));
-			objectLayer.addGameObject(planets[3] = new Planet(), new Vector3D(260, 360));
 			
-			var myFunction:Function = function():void {
-				var pickupPosition:Vector3D = planets[2].position.clone();
-				pickupPosition.x -= 40;
-				pickupPosition.y -= 20;
-				objectLayer.addGameObject(pickups[1] = new Pickup(), pickupPosition);
-				pickups[1].handleMessage("rotate", planets[2]);
-			}
+			objectLayer.addGameObject(planets[3] = new TeleporterPlanet(32), new Vector3D(260, 360));
 			
-			objectLayer.addGameObject(player = new Player(), new Vector3D(350, 200));
+			objectLayer.addGameObject(player = new Player(planets[1]), new Vector3D(350, 200));
 			objectLayer.addGameObject(satellite = new Satellite(), new Vector3D(500, 500));
-			objectLayer.addGameObject(pickups[0] = new Pickup(myFunction), new Vector3D(310, 410));
+			objectLayer.addGameObject(pickups[0] = new Pickup(), new Vector3D(310, 410));
+			objectLayer.addGameObject(pickups[1] = new Pickup(), new Vector3D(420, 420));
 			
-			respawnPlanet = planets[1];
 			player.handleMessage("rotate", planets[1]);
 			satellite.handleMessage("rotate", planets[2]);
 			pickups[0].handleMessage("rotate", planets[3]);
+			planets[3].handleMessage("set destination", planets[1]);
+			pickups[1].handleMessage("rotate", planets[2]);
 			planets[1].handleMessage("rotate", planets[0]);
 			planets[2].handleMessage("rotate", planets[0]);
 			planets[3].handleMessage("rotate", planets[0]);

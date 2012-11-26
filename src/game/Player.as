@@ -14,8 +14,11 @@ package game
 	
 	public class Player extends GameObject
 	{
-		public function Player()
+		private var respawnPlanet:GameObject;
+		
+		public function Player(respawnPlanet:GameObject)
 		{
+			this.respawnPlanet = respawnPlanet;
 			addComponent(new BoundingCircle(16));
 			addComponent(new BoundingShapeRenderer(Gravitation.playerColor));
 			addComponent(new Mover(new Vector3D(0, 0), 0, 0, true));
@@ -28,6 +31,7 @@ package game
 		
 		override public function afterCollisionWith(other:GameObject):void 
 		{
+			super.afterCollisionWith(other);
 			if (!(other is Pickup))
 			{
 				this.handleMessage("destroyed");
@@ -37,10 +41,11 @@ package game
 		
 		override public function reset():void
 		{
-			this.position = Gravitation.respawnPlanet.position.clone();
+			this.mover.velocity = new Vector3D(0, 0);
+			this.position = respawnPlanet.position.clone();
 			this.position.x -= 50;
 			this.position.y -= 50;
-			this.handleMessage("rotate", Gravitation.respawnPlanet);
+			this.handleMessage("rotate", respawnPlanet);
 		}
 	}
 }

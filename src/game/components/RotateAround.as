@@ -59,6 +59,7 @@ package game.components
 			{
 				this.actualAngle = Math.PI * 2 - this.actualAngle;
 			}
+			target.handleMessage("rotating around", this.gameObject);
 		}
 	}
 }
