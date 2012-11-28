@@ -17,7 +17,7 @@ package game
 		public function Pickup(collideFunction:Function = null) 
 		{
 			this.collideFunction = collideFunction;
-			
+			this.mass = 0;
 			addComponent(new BoundingCircle(8));
 			addComponent(new BoundingShapeRenderer(Gravitation.pickupColor));
 			addComponent(new Mover(new Vector3D(0, 0), 0, 0, true));

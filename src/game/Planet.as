@@ -21,7 +21,7 @@ package game
 			this.hasAtmosphere = hasAtmosphere;
 			addComponent(new BoundingCircle(radius));
 			addComponent(new BoundingShapeRenderer(Gravitation.planetColor));
-			addComponent(new Mover(new Vector3D(0, 0), 10, 2, false));
+			addComponent(new Mover(new Vector3D(0, 0), 10, 5));
 			addComponent(new RotateAround(0.05));
 			if (this.hasAtmosphere) setAtmosphere();
 		}
