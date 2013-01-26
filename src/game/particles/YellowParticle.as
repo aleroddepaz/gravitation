@@ -7,11 +7,6 @@ package game.particles
 	public class YellowParticle extends Particle
 	{
 		
-		public function YellowParticle() 
-		{
-			
-		}
-		
 		override public function render(graphics:Graphics, camera:Camera):void
 		{
 			graphics.beginFill(0xffff00);

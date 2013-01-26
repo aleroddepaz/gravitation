@@ -28,12 +28,12 @@ package game.components
 			while (angle < Math.PI * 2) {
 				angle += Math.random() * 2 + 1;
 				var particle:Particle = new Particle();
-				particle.color = this.color;
 				var life:Number = 0.2 + (Math.random() - Math.random()) * 0.2;
 				var position:Vector3D = gameObject.position.clone();
 				position.x += Math.cos(angle) * distance;
 				position.y += Math.sin(angle) * distance;
 				particle.initialize(life, position, new Vector3D(0, 0, 0));
+				particle.color = this.color;
 				particleLayer.addParticle(particle);
 			}
 		}

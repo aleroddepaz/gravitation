@@ -13,19 +13,24 @@ package game
 	
 	public class Pickup extends GameObject
 	{
-		protected var collideFunction:Function;
+		private var target:GameObject;
 		private static const pickupColor:uint = 0xffffff;
 		
-		public function Pickup(target:GameObject, collideFunction:Function = null)
+		public function Pickup(target:GameObject)
 		{
-			this.collideFunction = collideFunction;
 			this.mass = 0;
+			this.target = target;
 			addComponent(new BoundingCircle(8));
 			addComponent(new BoundingShapeRenderer(Pickup.pickupColor));
 			addComponent(new Mover(new Vector3D(0, 0), 0, 0, true));
 			addComponent(new ParticleEmitter(Particle, 8, 0, 1, 0, 0.4, 5, 0.5));
 			addComponent(new ExplodeOnDestroy(Particle));
 			addComponent(new RotateAround(50));
+		}
+		
+		override public function initialize():void 
+		{
+			super.initialize();
 			handleMessage("rotate", target);
 		}
 		
@@ -33,12 +38,8 @@ package game
 		{
 			if (other is Player)
 			{
-				this.handleMessage("destroyed");
-				if (this.collideFunction != null)
-				{
-					this.collideFunction.call();
-				}
-				this.destroyed = true;
+				handleMessage("destroyed");
+				destroyed = true;
 			}
 		}
 	}

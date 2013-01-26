@@ -5,7 +5,7 @@ package game.components
 	import nl.jorisdormans.phantom2D.objects.GameObject;
 	import nl.jorisdormans.phantom2D.objects.GameObjectComponent;
 	
-	public class Teleporter extends GameObjectComponent
+	public class Teleport extends GameObjectComponent
 	{
 		private var other:GameObject;
 		
@@ -23,17 +23,14 @@ package game.components
 		
 		private function teleport(data:Object):int
 		{
-			var player:GameObject = data as GameObject;
+			var player:GameObject = data as Player;
 			if (!player)
 			{
 				trace("WARNING: Cannot cast GameObject");
 				return Phantom.MESSAGE_NOT_HANDLED;
 			}
-			if (player is Player)
-			{
-				player.position = other.position.clone().add(player.position.clone().subtract(this.gameObject.position));
-				player.handleMessage("rotate", this.other);
-			}
+			player.position = other.position.clone().add(player.position.clone().subtract(this.gameObject.position));
+			player.handleMessage("rotate", this.other);
 			return Phantom.MESSAGE_HANDLED;
 		}
 		
@@ -46,7 +43,6 @@ package game.components
 				return Phantom.MESSAGE_NOT_HANDLED;
 			}
 			this.other = other;
-			trace("OK: Destination setted to " + other.toString());
 			return Phantom.MESSAGE_HANDLED;
 		}
 	}

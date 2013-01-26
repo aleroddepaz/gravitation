@@ -11,11 +11,11 @@ package game
 	public class Planet extends GameObject
 	{
 		private static const planetColor:uint = 0x555555;
-		private static const atmosphereColor:uint = 0x555555;
+		private static const atmosphereColor:uint = 0x777777;
 		
-		private var radius:uint;
-		private var target:GameObject;
-		private var hasAtmosphere:Boolean;
+		protected var radius:uint;
+		protected var target:GameObject;
+		protected var hasAtmosphere:Boolean;
 		
 		public function Planet(target:GameObject, radius:uint = 32, hasAtmosphere:Boolean = true)
 		{
@@ -28,7 +28,7 @@ package game
 			addComponent(new RotateAround(5));
 			if (this.hasAtmosphere)
 			{
-				addComponent(new AtmosphereParticleEmitter(getAtmosphereRadius(), Planet.atmosphereColor));
+				addAtmosphere();
 			}
 		}
 		
@@ -52,6 +52,12 @@ package game
 		{
 			var distance:Number = Math.abs(Vector3D.distance(position, playerPosition));
 			return hasAtmosphere && distance < getAtmosphereRadius();
+		}
+		
+		public function addAtmosphere():void
+		{
+			trace("White!");
+			addComponent(new AtmosphereParticleEmitter(getAtmosphereRadius(), Planet.atmosphereColor));
 		}
 	}
 }
