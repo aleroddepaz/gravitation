@@ -11,21 +11,18 @@ package game
 	
 	public class Enemy extends GameObject 
 	{
+		private static const enemyColor:uint = 0x555555;
+		
 		protected var radius:uint;
 		protected var seekFleeComponent:SeekAndFlee;
 		
-		public function Enemy(player, planets, radius:uint = 32) 
+		public function Enemy(player:Player, planets:Planet, radius:uint = 32) 
 		{
-			super();
 			this.radius = radius;
 			addComponent(new BoundingCircle(radius));
-			addComponent(new BoundingShapeRenderer(Gravitation.planetColor));
+			addComponent(new BoundingShapeRenderer(Enemy.enemyColor));
 			addComponent(new Mover(new Vector3D()));
 			addComponent(seekFleeComponent = new SeekAndFlee(player, SeekAndFlee.SEEK, 50));
-			for each(var planet:Planet in planets)
-			{
-				//addComponent(new SeekAndFlee(planet, SeekAndFlee.FLEE));
-			}
 		}
 		
 		override public function afterCollisionWith(other:GameObject):void 

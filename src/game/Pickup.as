@@ -1,8 +1,9 @@
-package game 
+package game
 {
 	import flash.geom.Vector3D;
 	import game.components.ExplodeOnDestroy;
 	import game.components.RotateAround;
+	import nl.jorisdormans.phantom2D.core.Composite;
 	import nl.jorisdormans.phantom2D.objects.GameObject;
 	import nl.jorisdormans.phantom2D.objects.Mover;
 	import nl.jorisdormans.phantom2D.objects.renderers.BoundingShapeRenderer;
@@ -10,23 +11,25 @@ package game
 	import nl.jorisdormans.phantom2D.particles.Particle;
 	import nl.jorisdormans.phantom2D.particles.ParticleEmitter;
 	
-	public class Pickup extends GameObject 
+	public class Pickup extends GameObject
 	{
-		private var collideFunction:Function;
+		protected var collideFunction:Function;
+		private static const pickupColor:uint = 0xffffff;
 		
-		public function Pickup(collideFunction:Function = null) 
+		public function Pickup(target:GameObject, collideFunction:Function = null)
 		{
 			this.collideFunction = collideFunction;
 			this.mass = 0;
 			addComponent(new BoundingCircle(8));
-			addComponent(new BoundingShapeRenderer(Gravitation.pickupColor));
+			addComponent(new BoundingShapeRenderer(Pickup.pickupColor));
 			addComponent(new Mover(new Vector3D(0, 0), 0, 0, true));
 			addComponent(new ParticleEmitter(Particle, 8, 0, 1, 0, 0.4, 5, 0.5));
-			addComponent(new RotateAround(0.5));
 			addComponent(new ExplodeOnDestroy(Particle));
+			addComponent(new RotateAround(50));
+			handleMessage("rotate", target);
 		}
 		
-		override public function afterCollisionWith(other:GameObject):void 
+		override public function afterCollisionWith(other:GameObject):void
 		{
 			if (other is Player)
 			{

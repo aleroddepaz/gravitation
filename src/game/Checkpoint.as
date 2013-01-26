@@ -1,34 +1,48 @@
-package game 
+package game
 {
 	import flash.events.TimerEvent;
 	import flash.geom.Vector3D;
 	import flash.utils.Timer;
+	import game.components.RotateAround;
+	import nl.jorisdormans.phantom2D.core.Composite;
 	import nl.jorisdormans.phantom2D.objects.GameObject;
+	import nl.jorisdormans.phantom2D.objects.renderers.BoundingShapeRenderer;
+	import nl.jorisdormans.phantom2D.objects.shapes.BoundingCircle;
 	
-	public class Checkpoint extends GameObject 
+	public class Checkpoint extends GameObject
 	{
-		protected var respawnPlanet:GameObject;
+		private var target:Planet;
 		
-		public function Checkpoint(respawnPlanet:GameObject) 
+		public function Checkpoint(respawnPlanet:Planet) 
 		{
-			this.respawnPlanet = respawnPlanet;
+			this.target = respawnPlanet;
+			addComponent(new RotateAround(100));
 		}
 		
+		override public function initialize():void 
+		{
+			super.initialize();
+			handleMessage("rotate", this.target);
+			createNewPlayer();
+		}
+		
+		public function getRespawnPlanet():Planet
+		{
+			return target;
+		}
+
 		public function respawnPlayer():void
 		{
 			var timer:Timer = new Timer(2000, 1);
-			timer.addEventListener(TimerEvent.TIMER_COMPLETE, _foo);
+			timer.addEventListener(TimerEvent.TIMER_COMPLETE, createNewPlayer);
 			timer.start();
 		}
 		
-		private function _foo(event:TimerEvent):void
+		private function createNewPlayer(event:TimerEvent = null):void
 		{
 			var player:Player = new Player(this);
-			var respawnPosition:Vector3D = respawnPlanet.position.clone();
-			respawnPosition.x -= 50;
-			respawnPosition.y -= 50;
-			this.objectLayer.addGameObject(player, respawnPosition);
-			player.handleMessage("rotate", respawnPlanet);
+			objectLayer.addGameObject(player, position);
+			objectLayer.screen.camera.handleMessage("followObject", {followObject : player});
 		}
 	}
 }

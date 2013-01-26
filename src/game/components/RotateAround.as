@@ -1,27 +1,36 @@
-package game.components 
+package game.components
 {
-	import game.Planet;
 	import flash.geom.Vector3D;
+	import nl.jorisdormans.phantom2D.core.Phantom;
 	import nl.jorisdormans.phantom2D.objects.GameObject;
 	import nl.jorisdormans.phantom2D.objects.GameObjectComponent;
 	
 	public class RotateAround extends GameObjectComponent
 	{
-		public var inPlanet:Boolean = false;
-		public var target:GameObject;
-		
+		private var target:GameObject;
+		private var linearSpeed:Number;
 		private var rotationSpeed:Number; // > 0 = clockwise, < 0 = counterclockwise
 		private var distance:Number;
 		private var actualAngle:Number;
 		
-		public function RotateAround(rotationSpeed:Number = 1)
+		public function RotateAround(linearSpeed:Number)
 		{
-			this.rotationSpeed = rotationSpeed;
+			this.linearSpeed = linearSpeed;
+		}
+		
+		public function getLinearSpeed():Number
+		{
+			return linearSpeed;
+		}
+		
+		public function getTarget():GameObject
+		{
+			return target;
 		}
 		
 		override public function update(elapsedTime:Number):void
 		{
-			if (inPlanet)
+			if (target)
 			{
 				var targetPosition:Vector3D = target.position.clone();
 				this.actualAngle = (actualAngle + elapsedTime * rotationSpeed) % (Math.PI * 2);
@@ -31,35 +40,46 @@ package game.components
 			}
 		}
 		
-		override public function handleMessage(message:String, data:Object = null, componentClass:Class = null):int 
+		override public function handleMessage(message:String, data:Object = null, componentClass:Class = null):int
 		{
 			switch (message)
 			{
-				case "rotate":
-					setTarget(data);
+				case "rotate": 
+					return setTarget(data);
 			}
-			return 0;
+			return Phantom.MESSAGE_NOT_HANDLED;
 		}
 		
-		private function setTarget(targetObject:Object):void
+		private function setTarget(targetObject:Object):int
 		{
-			this.target = targetObject as GameObject;
-			if (!this.target)
+			if (targetObject == null)
+			{
+				target = null;
+				return Phantom.MESSAGE_HANDLED;
+			}
+			target = targetObject as GameObject;
+			if (!target)
 			{
 				trace("WARNING: Cannot cast target object");
-				return;
+				return Phantom.MESSAGE_NOT_HANDLED;
 			}
-			inPlanet = true;
-			var targetPosition:Vector3D = target.position.clone();
-			this.distance = Vector3D.distance(gameObject.position, targetPosition);
-			var aux:Vector3D = gameObject.position.subtract(targetPosition);
+			distance = Vector3D.distance(gameObject.position, target.position);
+			actualAngle = calculateActualAngle(target.position);
+			rotationSpeed = linearSpeed / distance;
+			target.handleMessage("rotating around", gameObject);
+			return Phantom.MESSAGE_HANDLED;
+		}
+		
+		private function calculateActualAngle(targetPosition:Vector3D):Number
+		{
+			var aux:Vector3D = gameObject.position.clone().subtract(targetPosition);
 			aux.normalize();
-			this.actualAngle = Vector3D.angleBetween(new Vector3D(1, 0, 0), aux);
+			var actualAngle:Number = Vector3D.angleBetween(new Vector3D(1, 0, 0), aux);
 			if (gameObject.position.y > targetPosition.y)
 			{
-				this.actualAngle = Math.PI * 2 - this.actualAngle;
+				actualAngle = Math.PI * 2 - actualAngle;
 			}
-			target.handleMessage("rotating around", this.gameObject);
+			return actualAngle;
 		}
 	}
 }

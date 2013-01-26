@@ -1,61 +1,66 @@
-package game.components 
+package game.components
 {
-	import game.Planet;
 	import flash.geom.Vector3D;
+	import game.Planet;
 	import nl.jorisdormans.phantom2D.core.Composite;
 	import nl.jorisdormans.phantom2D.core.InputState;
-	import nl.jorisdormans.phantom2D.objects.IInputHandler;
 	import nl.jorisdormans.phantom2D.objects.GameObject;
 	import nl.jorisdormans.phantom2D.objects.GameObjectComponent;
-	import nl.jorisdormans.phantom2D.objects.Mover;
+	import nl.jorisdormans.phantom2D.objects.IInputHandler;
 	
 	public class PlanetSwitcher extends GameObjectComponent implements IInputHandler
 	{
 		private var switchDirection:Vector3D;
-		private var switchSpeed:Number = 100;
+		private var switchSpeed:Number;
 		private var component:RotateAround;
 		
 		override public function onAdd(composite:Composite):void
 		{
 			super.onAdd(composite);
 			component = composite.getComponentByClass(RotateAround) as RotateAround;
+			switchSpeed = component.getLinearSpeed();
 		}
 		
 		public function handleInput(elapsedTime:Number, currentState:InputState, previousState:InputState):void
 		{
-			if (currentState.keySpace && !previousState.keySpace) {
-				if (component.inPlanet)
+			if (currentState.keySpace && !previousState.keySpace)
+			{
+				var target:GameObject = component.getTarget();
+				if (target != null)
 				{
-					component.inPlanet = false;
-					gameObject.mover.velocity = calculateNewDirection(gameObject.position.subtract(component.target.position));
-					trace(gameObject.mover.velocity);
+					leavePlanet(target);
 				}
 				else
 				{
-					var target:GameObject;
-					for each(var p:Planet in gameObject.objectLayer.getAllObjectsOfClass(Planet))
-					{
-						if (p.isCloseTo(gameObject.position)) target = p;
-					}
-					if (target)
-					{
-						gameObject.mover.velocity = new Vector3D(0, 0);
-						component.handleMessage("rotate", target);
-					}
+					selectPlanet();
 				}
 			}
 		}
 		
-		private function calculateNewDirection(perp:Vector3D):Vector3D
+		private function leavePlanet(target:GameObject):void
 		{
-			var newDirection:Vector3D = perp;
+			component.handleMessage("rotate", null);
+			var newDirection:Vector3D = gameObject.position.subtract(target.position);
 			var tmp:Number = newDirection.x;
 			newDirection.x = newDirection.y;
 			newDirection.y = tmp;
 			newDirection.y *= -1;
 			newDirection.normalize();
 			newDirection.scaleBy(switchSpeed);
-			return newDirection;
+			gameObject.mover.velocity = newDirection;
+		}
+		
+		private function selectPlanet():void
+		{
+			for each (var p:Planet in gameObject.objectLayer.getAllObjectsOfClass(Planet))
+			{
+				if (p.isCloseTo(gameObject.position))
+				{
+					gameObject.mover.velocity = new Vector3D(0, 0);
+					gameObject.handleMessage("rotate", p);
+					return;
+				}
+			}
 		}
 	}
 }
