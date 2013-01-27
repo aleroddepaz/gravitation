@@ -1,4 +1,4 @@
-package game.components 
+package game.components
 {
 	import game.Player;
 	import nl.jorisdormans.phantom2D.core.Phantom;
@@ -9,13 +9,13 @@ package game.components
 	{
 		private var other:GameObject;
 		
-		override public function handleMessage(message:String, data:Object = null, componentClass:Class = null):int 
+		override public function handleMessage(message:String, data:Object = null, componentClass:Class = null):int
 		{
 			switch (message)
 			{
-				case "rotating around":
+				case "rotating around": 
 					return teleport(data);
-				case "set destination":
+				case "set destination": 
 					return setDestination(data);
 			}
 			return 0;

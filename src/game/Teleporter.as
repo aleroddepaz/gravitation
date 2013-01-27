@@ -6,7 +6,7 @@ package game
 	
 	public class Teleporter extends Planet 
 	{
-		private static const atmosphereColor:uint = 0xff5555;
+		private static const atmosphereColor:uint = 0x33ff33;
 		
 		public function Teleporter(target:GameObject, radius:uint = 32)
 		{
@@ -16,7 +16,6 @@ package game
 		
 		override public function addAtmosphere():void
 		{
-			trace("Red!");
 			addComponent(new AtmosphereParticleEmitter(getAtmosphereRadius(), Teleporter.atmosphereColor));
 		}
 	}

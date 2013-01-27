@@ -56,7 +56,6 @@ package game
 		
 		public function addAtmosphere():void
 		{
-			trace("White!");
 			addComponent(new AtmosphereParticleEmitter(getAtmosphereRadius(), Planet.atmosphereColor));
 		}
 	}

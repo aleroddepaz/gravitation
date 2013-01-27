@@ -2,6 +2,7 @@ package game
 {
 	import flash.filters.BlurFilter;
 	import flash.geom.Vector3D;
+	import nl.jorisdormans.phantom2D.cameras.CameraEase;
 	import nl.jorisdormans.phantom2D.cameras.FollowObject;
 	import nl.jorisdormans.phantom2D.cameras.RestrictToLayer;
 	import nl.jorisdormans.phantom2D.core.Screen;
@@ -11,7 +12,7 @@ package game
 	
 	public class Gravitation extends Screen
 	{
-		private var particleLimit:int = 600;
+		private var particleLimit:int = 1000;
 		private var particleLayer:ParticleLayer;
 		private var objectLayer:TiledObjectLayer;
 		
@@ -28,6 +29,7 @@ package game
 			particleLayer.sprite.filters = [new BlurFilter()];
 			
 			camera.addComponent(new FollowObject(null));
+			camera.addComponent(new CameraEase());
 			camera.addComponent(new RestrictToLayer(objectLayer));
 			
 			// Galaxy 1
@@ -35,8 +37,8 @@ package game
 			objectLayer.addGameObject(planets[1] = new Planet(planets[0]), new Vector3D(200, 200));
 			objectLayer.addGameObject(planets[2] = new Planet(planets[0]), new Vector3D(200, 400));
 			objectLayer.addGameObject(planets[3] = new Planet(planets[0]), new Vector3D(450, 300));
-			addPickup(planets[2], 60);
-			addPickup(planets[3], 60);
+			addPickup(ShieldPickup, planets[2], 60);
+			addPickup(Pickup, planets[3], 60);
 			
 			// Galaxy 2
 			objectLayer.addGameObject(planets[4] = new Planet(null, 50, false), new Vector3D(800, 400));
@@ -44,8 +46,8 @@ package game
 			objectLayer.addGameObject(planets[6] = new Planet(planets[4]), new Vector3D(880, 320));
 			objectLayer.addGameObject(planets[7] = new Planet(planets[4]), new Vector3D(720, 480));
 			objectLayer.addGameObject(planets[8] = new Planet(planets[4]), new Vector3D(880, 480));
-			addPickup(planets[6], 50);
-			addPickup(planets[7], 50);
+			addPickup(ShieldPickup, planets[6], 50);
+			addPickup(Pickup, planets[7], 50);
 			
 			// Galaxy 3
 			objectLayer.addGameObject(planets[9] = new Planet(null, 50, false), new Vector3D(800, 800));
@@ -53,16 +55,15 @@ package game
 			planets[10].handleMessage("set destination", planets[1]);
 			
 			objectLayer.addGameObject(checkPoint = new Checkpoint(planets[1]), new Vector3D(150, 150));
-			
 		}
 		
-		private function addPickup(planet:Planet, distance:Number):void
+		private function addPickup(pickupClass:Class, planet:Planet, distance:Number):void
 		{
 			var angle:Number = Math.random() * Math.PI * 2;
 			var positionX:Number = planet.position.x + distance * Math.cos(angle);
 			var positionY:Number = planet.position.y + distance * Math.sin(angle);
 			var index:int = pickups.length;
-			objectLayer.addGameObject(pickups[index] = new Pickup(planet), new Vector3D(positionX, positionY));
+			objectLayer.addGameObject(pickups[index] = new pickupClass(planet), new Vector3D(positionX, positionY));
 		}
 	}
 }

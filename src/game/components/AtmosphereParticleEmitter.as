@@ -1,11 +1,11 @@
-package game.components 
+package game.components
 {
 	import flash.geom.Vector3D;
 	import nl.jorisdormans.phantom2D.objects.GameObjectComponent;
 	import nl.jorisdormans.phantom2D.particles.Particle;
 	import nl.jorisdormans.phantom2D.particles.ParticleLayer;
 	
-	public class AtmosphereParticleEmitter extends GameObjectComponent 
+	public class AtmosphereParticleEmitter extends GameObjectComponent
 	{
 		private var distance:Number;
 		private var color:uint;
@@ -19,16 +19,17 @@ package game.components
 		override public function update(elapsedTime:Number):void
 		{
 			var particleLayer:ParticleLayer = gameObject.objectLayer.screen.getComponentByClass(ParticleLayer) as ParticleLayer;
-			if (!particleLayer) {
-				trace("WARNING: ParticleLayer not found for " + gameObject.toString());
+			if (!particleLayer)
+			{
 				return;
 			}
 			
 			var angle:Number = 0;
-			while (angle < Math.PI * 2) {
+			while (angle < Math.PI * 2)
+			{
 				angle += Math.random() * 2 + 1;
 				var particle:Particle = new Particle();
-				var life:Number = 0.2 + (Math.random() - Math.random()) * 0.2;
+				var life:Number = 0.25 + (Math.random() - Math.random()) * 0.2;
 				var position:Vector3D = gameObject.position.clone();
 				position.x += Math.cos(angle) * distance;
 				position.y += Math.sin(angle) * distance;
