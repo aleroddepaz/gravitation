@@ -7,8 +7,9 @@ package game.components
 	
 	public class RotateAround extends GameObjectComponent
 	{
+		protected var linearSpeed:Number;
+		
 		private var target:GameObject;
-		private var linearSpeed:Number;
 		private var rotationSpeed:Number; // > 0 = clockwise, < 0 = counterclockwise
 		private var distance:Number;
 		private var actualAngle:Number;
@@ -16,6 +17,19 @@ package game.components
 		public function RotateAround(linearSpeed:Number)
 		{
 			this.linearSpeed = linearSpeed;
+		}
+		
+		override public function generateXML():XML 
+		{
+			var xml:XML = super.generateXML();
+			xml.@linearSpeed = linearSpeed;
+			return xml;
+		}
+		
+		override public function readXML(xml:XML):void 
+		{
+			super.readXML(xml);
+			if (xml.@linearSpeed.length() > 0) linearSpeed = xml.@linearSpeed;
 		}
 		
 		public function getLinearSpeed():Number

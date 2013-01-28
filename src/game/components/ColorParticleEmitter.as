@@ -19,7 +19,7 @@ package game.components
 		private var layer:int;
 		private var particleLayer:ParticleLayer;
 		
-		public function ColorParticleEmitter(color:uint, frequency:Number = 10, layer:int = 0, life:Number = 1, randomLife:Number = 0, randomPosition:Number = 0, randomVelocity:Number = 0, speedFactor:Number = 1) 
+		public function ColorParticleEmitter(color:uint, frequency:Number = 10, life:Number = 1, randomLife:Number = 0, randomPosition:Number = 0, randomVelocity:Number = 0, speedFactor:Number = 1) 
 		{
 			this.timer = 0;
 			this.color = color;
@@ -29,7 +29,33 @@ package game.components
 			this.randomPosition = randomPosition;
 			this.randomVelocity = randomVelocity;
 			this.speedFactor = speedFactor;
-			this.layer = layer;
+		}
+		
+		override public function generateXML():XML 
+		{
+			var xml:XML = super.generateXML();
+			xml.@timer = timer;
+			xml.@color = color;
+			xml.@delay = delay;
+			xml.@life = life;
+			xml.@randomLife = randomLife;
+			xml.@randomPosition = randomPosition;
+			xml.@randomVelocity = randomVelocity;
+			xml.@speedFactor = speedFactor;
+			return xml;
+		}
+		
+		override public function readXML(xml:XML):void 
+		{
+			super.readXML(xml);
+			if (xml.@timer.length() > 0) timer = xml.@timer;
+			if (xml.@color.length() > 0) color = xml.@color;
+			if (xml.@delay.length() > 0) delay = xml.@delay;
+			if (xml.@life.length() > 0) life = xml.@life;
+			if (xml.@randomLife.length() > 0) randomLife = xml.@randomLife;
+			if (xml.@randomPosition.length() > 0) randomPosition = xml.@randomPosition;
+			if (xml.@randomVelocity.length() > 0) randomVelocity = xml.@randomVelocity;
+			if (xml.@speedFactor.length() > 0) speedFactor = xml.@speedFactor;
 		}
 		
 		override public function update(elapsedTime:Number):void 

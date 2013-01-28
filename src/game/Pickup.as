@@ -31,7 +31,7 @@ package game
 		public function addColorComponents():void
 		{
 			addComponent(new BoundingShapeRenderer(Pickup.pickupColor));
-			addComponent(new ColorParticleEmitter(Pickup.pickupColor, 8, 0, 1, 0, 0.4, 5, 0.5));
+			addComponent(new ColorParticleEmitter(Pickup.pickupColor, 8, 1, 0, 0.4, 5, 0.5));
 			addComponent(new ExplodeOnDestroy(Pickup.pickupColor));
 		}
 		

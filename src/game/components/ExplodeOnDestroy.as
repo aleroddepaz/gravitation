@@ -8,16 +8,10 @@ package game.components
 	public class ExplodeOnDestroy extends GameObjectComponent
 	{
 		private var color:uint;
-		private var particleLayer:ParticleLayer;
 		
 		public function ExplodeOnDestroy(color:uint)
 		{
 			this.color = color;
-		}
-		
-		override public function onInitialize():void
-		{
-			this.particleLayer = gameObject.objectLayer.screen.getComponentByClass(ParticleLayer) as ParticleLayer;
 		}
 		
 		override public function handleMessage(message:String, data:Object = null, componentClass:Class = null):int
@@ -31,8 +25,22 @@ package game.components
 			return super.handleMessage(message, data, componentClass);
 		}
 		
+		override public function generateXML():XML 
+		{
+			var xml:XML = super.generateXML();
+			xml.@color = color;
+			return xml;
+		}
+		
+		override public function readXML(xml:XML):void 
+		{
+			super.readXML(xml);
+			if (xml.@color.length() > 0) color = xml.@color;
+		}
+		
 		private function explode():void
 		{
+			var particleLayer:ParticleLayer = gameObject.objectLayer.screen.getComponentByClass(ParticleLayer) as ParticleLayer;
 			if (!particleLayer)
 			{
 				return;

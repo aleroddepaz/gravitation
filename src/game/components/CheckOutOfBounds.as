@@ -6,13 +6,30 @@ package game.components
 	
 	public class CheckOutOfBounds extends GameObjectComponent
 	{
+		private var offset:Number;
+		private var respawned:Boolean;
 		private var checkpoint:Checkpoint;
-		private var offset:Number = 10;
-		private var respawned:Boolean = false;
 		
 		public function CheckOutOfBounds(checkpoint:Checkpoint)
 		{
+			this.offset = 10;
+			this.respawned = false;
 			this.checkpoint = checkpoint;
+		}
+		
+		override public function generateXML():XML 
+		{
+			var xml:XML = super.generateXML();
+			xml.@offset = offset;
+			xml.@respawned = respawned;
+			return xml;
+		}
+		
+		override public function readXML(xml:XML):void 
+		{
+			super.readXML(xml);
+			if (xml.@offset.length() > 0) respawned = xml.@offset;
+			if (xml.@distance.length() > 0) respawned = xml.@respawned;
 		}
 		
 		public override function update(elapsedTime:Number):void

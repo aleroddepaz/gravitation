@@ -19,7 +19,7 @@ package game
 		override public function addColorComponents():void
 		{
 			addComponent(new BoundingShapeRenderer(ShieldPickup.pickupColor));
-			addComponent(new ColorParticleEmitter(ShieldPickup.pickupColor, 8, 0, 1, 0, 0.4, 5, 0.5));
+			addComponent(new ColorParticleEmitter(ShieldPickup.pickupColor, 8, 1, 0, 0.4, 5, 0.5));
 			addComponent(new ExplodeOnDestroy(ShieldPickup.pickupColor));
 		}
 		

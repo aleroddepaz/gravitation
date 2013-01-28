@@ -16,6 +16,21 @@ package game.components
 			this.color = color;
 		}
 		
+		override public function generateXML():XML 
+		{
+			var xml:XML = super.generateXML();
+			xml.@distance = distance;
+			xml.@color = color;
+			return xml;
+		}
+		
+		override public function readXML(xml:XML):void 
+		{
+			super.readXML(xml);
+			if (xml.@distance.length() > 0) distance = xml.@distance;
+			if (xml.@color.length() > 0) color = xml.@color;
+		}
+		
 		override public function update(elapsedTime:Number):void
 		{
 			var particleLayer:ParticleLayer = gameObject.objectLayer.screen.getComponentByClass(ParticleLayer) as ParticleLayer;

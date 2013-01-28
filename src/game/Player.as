@@ -32,7 +32,7 @@ package game
 			addComponent(new Mover(new Vector3D(0, 0), 0, 0));
 			addComponent(new RotateAround(100));
 			addComponent(new ExplodeOnDestroy(Player.particleColor));
-			addComponent(new ColorParticleEmitter(Player.particleColor, 20, 0, 2, 0, 0.4, 10, 0.5));
+			addComponent(new ColorParticleEmitter(Player.particleColor, 20, 2, 0, 0.4, 10, 0.5));
 			addComponent(new PlanetSwitcher());
 			addComponent(new CheckOutOfBounds(checkPoint));
 			addComponent(new PlayerHealth());

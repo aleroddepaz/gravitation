@@ -24,7 +24,7 @@ package game
 			addComponent(new ColorParticleEmitter(Enemy.enemyColor, 1, 0));
 			addComponent(new ExplodeOnDestroy(Enemy.enemyColor));
 			addComponent(new Mover(new Vector3D()));
-			addComponent(new StateMachine(new SeekState()));
+			addComponent(new StateMachine(new SeekState(null)));
 		}
 		
 		override public function afterCollisionWith(other:GameObject):void 
