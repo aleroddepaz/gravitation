@@ -39,6 +39,7 @@ package game.components
 		
 		private function leavePlanet(target:GameObject):void
 		{
+			gameObject.handleMessage("switchSound");
 			component.handleMessage("rotate", null);
 			var newDirection:Vector3D = gameObject.position.subtract(target.position);
 			var tmp:Number = newDirection.x;
@@ -58,6 +59,7 @@ package game.components
 				{
 					gameObject.mover.velocity = new Vector3D(0, 0);
 					gameObject.handleMessage("rotate", p);
+					gameObject.handleMessage("enterSound");
 					return;
 				}
 			}

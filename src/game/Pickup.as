@@ -4,6 +4,7 @@ package game
 	import game.components.ColorParticleEmitter;
 	import game.components.ExplodeOnDestroy;
 	import game.components.RotateAround;
+	import game.components.SfxrSound;
 	import nl.jorisdormans.phantom2D.core.Composite;
 	import nl.jorisdormans.phantom2D.objects.GameObject;
 	import nl.jorisdormans.phantom2D.objects.Mover;
@@ -14,6 +15,7 @@ package game
 	{
 		protected var target:GameObject;
 		private static const pickupColor:uint = 0xffffff;
+		private static const pickupSound:String = "2,,0.0343,,0.4288,0.4971,,0.2291,,,,,,,,0.4649,,,1,,,,,0.5";
 		
 		public function Pickup(target:GameObject)
 		{
@@ -23,6 +25,7 @@ package game
 			addComponent(new BoundingCircle(8));
 			addComponent(new Mover(new Vector3D(0, 0), 0, 0, true));
 			addComponent(new RotateAround(50));
+			addComponent(new SfxrSound("pickupSound", Pickup.pickupSound));
 		}
 		
 		public function addColorComponents():void
@@ -42,6 +45,7 @@ package game
 		{
 			if (other is Player)
 			{
+				handleMessage("pickupSound");
 				handleMessage("destroy");
 			}
 		}

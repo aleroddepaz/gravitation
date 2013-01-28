@@ -25,7 +25,7 @@ package game
 			super(width, height);
 			addComponent(new Background(0x888888, 0xaaaaaa, 0x888888));
 			addComponent(particleLayer = new ParticleLayer(width, height, particleLimit));
-			addComponent(objectLayer = new TiledObjectLayer(40, 50, 50, 4));
+			addComponent(objectLayer = new TiledObjectLayer(40, 30, 30, 4));
 			particleLayer.sprite.filters = [new BlurFilter()];
 			
 			camera.addComponent(new FollowObject(null));
@@ -37,7 +37,7 @@ package game
 			objectLayer.addGameObject(planets[1] = new Planet(planets[0]), new Vector3D(200, 200));
 			objectLayer.addGameObject(planets[2] = new Planet(planets[0]), new Vector3D(200, 400));
 			objectLayer.addGameObject(planets[3] = new Planet(planets[0]), new Vector3D(450, 300));
-			addPickup(ShieldPickup, planets[2], 60);
+			addPickup(Pickup, planets[2], 60);
 			addPickup(Pickup, planets[3], 60);
 			
 			// Galaxy 2
@@ -52,9 +52,10 @@ package game
 			// Galaxy 3
 			objectLayer.addGameObject(planets[9] = new Planet(null, 50, false), new Vector3D(800, 800));
 			objectLayer.addGameObject(planets[10] = new Teleporter(planets[9]), new Vector3D(800, 700));
-			planets[10].handleMessage("set destination", planets[1]);
+			planets[10].handleMessage("setDestination", planets[1]);
 			
 			objectLayer.addGameObject(checkPoint = new Checkpoint(planets[1]), new Vector3D(150, 150));
+			
 		}
 		
 		private function addPickup(pickupClass:Class, planet:Planet, distance:Number):void

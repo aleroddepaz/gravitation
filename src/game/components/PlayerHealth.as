@@ -1,5 +1,6 @@
 package game.components
 {
+	import flash.display.Graphics;
 	import nl.jorisdormans.phantom2D.core.Phantom;
 	import nl.jorisdormans.phantom2D.objects.GameObjectComponent;
 	
@@ -21,11 +22,8 @@ package game.components
 		
 		private function incrementShield():int
 		{
-			if (numShields == 0)
-			{
-				gameObject.addComponent(new AtmosphereParticleEmitter(40, 0x3333ff));
-			}
 			numShields++;
+			gameObject.handleMessage("setRenderStyle", { fillColor: 0x3333ff } );
 			return Phantom.MESSAGE_HANDLED;
 		}
 		
@@ -34,12 +32,8 @@ package game.components
 			if (numShields > 0)
 			{
 				numShields--;
+				if (numShields == 0) gameObject.handleMessage("setRenderStyle", { fillColor: 0x3b3b3b } );
 				data.other.handleMessage("destroy");
-				if (numShields == 0)
-				{
-					var component:AtmosphereParticleEmitter = gameObject.getComponentByClass(AtmosphereParticleEmitter) as AtmosphereParticleEmitter;
-					gameObject.removeComponent(component);
-				}
 			}
 			else
 			{
@@ -48,7 +42,7 @@ package game.components
 			}
 			return Phantom.MESSAGE_HANDLED;
 		}
-	
+		
 	}
 
 }

@@ -13,9 +13,9 @@ package game.components
 		{
 			switch (message)
 			{
-				case "rotating around": 
+				case "rotatingAround": 
 					return teleport(data);
-				case "set destination": 
+				case "setDestination": 
 					return setDestination(data);
 			}
 			return 0;
@@ -31,6 +31,7 @@ package game.components
 			}
 			player.position = other.position.clone().add(player.position.clone().subtract(this.gameObject.position));
 			player.handleMessage("rotate", this.other);
+			gameObject.handleMessage("teleportSound");
 			return Phantom.MESSAGE_HANDLED;
 		}
 		

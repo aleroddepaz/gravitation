@@ -66,7 +66,7 @@ package game.components
 			distance = Vector3D.distance(gameObject.position, target.position);
 			actualAngle = calculateActualAngle(target.position);
 			rotationSpeed = linearSpeed / distance;
-			target.handleMessage("rotating around", gameObject);
+			target.handleMessage("rotatingAround", gameObject);
 			return Phantom.MESSAGE_HANDLED;
 		}
 		
