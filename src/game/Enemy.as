@@ -1,9 +1,10 @@
 package game 
 {
-	import flash.events.TimerEvent;
 	import flash.geom.Vector3D;
-	import flash.utils.Timer;
-	import game.components.SeekAndFlee;
+	import game.ai.SeekState;
+	import game.components.ColorParticleEmitter;
+	import game.components.ExplodeOnDestroy;
+	import nl.jorisdormans.phantom2D.ai.statemachines.StateMachine;
 	import nl.jorisdormans.phantom2D.objects.GameObject;
 	import nl.jorisdormans.phantom2D.objects.Mover;
 	import nl.jorisdormans.phantom2D.objects.renderers.BoundingShapeRenderer;
@@ -11,35 +12,24 @@ package game
 	
 	public class Enemy extends GameObject 
 	{
-		private static const enemyColor:uint = 0x555555;
+		private static const enemyColor:uint = 0xff3333;
 		
 		protected var radius:uint;
-		protected var seekFleeComponent:SeekAndFlee;
 		
-		public function Enemy(player:Player, planets:Planet, radius:uint = 32) 
+		public function Enemy(player:Player, planets:Planet, radius:uint = 16) 
 		{
 			this.radius = radius;
 			addComponent(new BoundingCircle(radius));
 			addComponent(new BoundingShapeRenderer(Enemy.enemyColor));
+			addComponent(new ColorParticleEmitter(Enemy.enemyColor, 1, 0));
+			addComponent(new ExplodeOnDestroy(Enemy.enemyColor));
 			addComponent(new Mover(new Vector3D()));
-			addComponent(seekFleeComponent = new SeekAndFlee(player, SeekAndFlee.SEEK, 50));
+			addComponent(new StateMachine(new SeekState()));
 		}
 		
 		override public function afterCollisionWith(other:GameObject):void 
 		{
 			super.afterCollisionWith(other);
-			if (other is Player)
-			{
-				seekFleeComponent.seek = false;
-				var timer:Timer = new Timer(2000, 1);
-				timer.addEventListener(TimerEvent.TIMER_COMPLETE, seekAgain);
-				timer.start();
-			}
-		}
-		
-		private function seekAgain(event:TimerEvent):void
-		{
-			seekFleeComponent.seek = true;
 		}
 	}
 }

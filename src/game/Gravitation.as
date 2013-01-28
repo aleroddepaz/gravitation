@@ -1,6 +1,7 @@
 package game
 {
 	import flash.filters.BlurFilter;
+	import flash.filters.GlowFilter;
 	import flash.geom.Vector3D;
 	import nl.jorisdormans.phantom2D.cameras.CameraEase;
 	import nl.jorisdormans.phantom2D.cameras.FollowObject;
@@ -26,7 +27,8 @@ package game
 			addComponent(new Background(0x888888, 0xaaaaaa, 0x888888));
 			addComponent(particleLayer = new ParticleLayer(width, height, particleLimit));
 			addComponent(objectLayer = new TiledObjectLayer(40, 30, 30, 4));
-			particleLayer.sprite.filters = [new BlurFilter()];
+			particleLayer.sprite.filters = [new GlowFilter(0x8899dd)];
+			objectLayer.sprite.filters = [new BlurFilter()];
 			
 			camera.addComponent(new FollowObject(null));
 			camera.addComponent(new CameraEase());
