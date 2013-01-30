@@ -45,6 +45,8 @@ package game.gameobjects
 		{
 			if (other is Player)
 			{
+				var game:Main = objectLayer.screen.game as Main;
+				game.updateProgress();
 				handleMessage("pickupSound");
 				handleMessage("destroy");
 			}
