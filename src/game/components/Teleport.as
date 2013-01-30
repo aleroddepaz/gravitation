@@ -40,7 +40,6 @@ package game.components
 						teleport(data.player);
 					}
 					return Phantom.MESSAGE_HANDLED;
-					
 			}
 			return super.handleMessage(message, data, componentClass);
 		}
@@ -48,7 +47,7 @@ package game.components
 		private function teleport(player:GameObject):void
 		{
 			player.position = destination.position.clone().add(player.position.clone().subtract(gameObject.position));
-			player.handleMessage("rotate", destination);
+			player.handleMessage("rotate", {target : destination});
 		}
 		
 	}

@@ -59,7 +59,7 @@ package game.components.player
 			switch (message)
 			{
 				case "rotate": 
-					setTarget(data);
+					setTarget(data.target);
 					return Phantom.MESSAGE_HANDLED;
 				case "clear":
 					target = null;
@@ -68,14 +68,14 @@ package game.components.player
 			return Phantom.MESSAGE_NOT_HANDLED;
 		}
 		
-		private function setTarget(targetObject:Object):void
+		private function setTarget(target:Object):void
 		{
-			target = targetObject as GameObject;
-			if (!target)
+			this.target = target as GameObject;
+			if (!this.target)
 			{
 				return;
 			}
-			gameObject.objectLayer.screen.camera.handleMessage("followObject", {followObject : targetObject});
+			gameObject.objectLayer.screen.camera.handleMessage("followObject", { followObject : this.target } );
 			distance = Vector3D.distance(gameObject.position, target.position);
 			actualAngle = calculateActualAngle(target.position);
 			rotationSpeed = linearSpeed / distance;

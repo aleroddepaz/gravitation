@@ -33,11 +33,13 @@ package game.components.player
 			{
 				numShields--;
 				if (numShields == 0) gameObject.handleMessage("setRenderStyle", { fillColor: 0x3b3b3b } );
-				data.other.handleMessage("destroy");
+				data.enemy.handleMessage("destroy");
+				data.enemy.handleMessage("destroySound");
 			}
 			else
 			{
 				data.checkPoint.respawnPlayer();
+				gameObject.handleMessage("enemyCollisionSound");
 				gameObject.handleMessage("destroy");
 			}
 			return Phantom.MESSAGE_HANDLED;

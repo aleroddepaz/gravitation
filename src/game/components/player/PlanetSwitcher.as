@@ -59,7 +59,7 @@ package game.components.player
 				if (p.isCloseTo(gameObject.position))
 				{
 					gameObject.mover.velocity = new Vector3D(0, 0);
-					gameObject.handleMessage("rotate", p);
+					gameObject.handleMessage("rotate", { target: p } );
 					gameObject.handleMessage("enterSound");
 					return;
 				}

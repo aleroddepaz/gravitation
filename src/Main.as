@@ -11,7 +11,7 @@ package
 	{
 		
 		private static var pickups:int = 0;
-		private var currentLevel:int = 3;
+		private var currentLevel:int = 2;
 		
 		public function Main()
 		{

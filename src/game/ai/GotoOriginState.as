@@ -1,18 +1,17 @@
 package game.ai 
 {
 	import flash.geom.Vector3D;
-	import game.Gravitation;
 	import nl.jorisdormans.phantom2D.ai.statemachines.State;
 	import nl.jorisdormans.phantom2D.core.Composite;
 	import nl.jorisdormans.phantom2D.objects.GameObject;
 	
-	public class FleeState extends State 
+	public class GotoOriginState extends State 
 	{
 		
 		private var gameObject:GameObject;
 		private var speed:Number;
 		
-		public function FleeState(speed:Number)
+		public function GotoOriginState(speed:Number)
 		{
 			this.speed = speed;
 		}
@@ -25,18 +24,17 @@ package game.ai
 		
 		override public function update(elapsedTime:Number):void 
 		{
-			if (gameObject.mover && Gravitation.player)
+			if (Vector3D.distance(gameObject.position, gameObject.startPosition) > 0.1)
 			{
-				var from:Vector3D = gameObject.position;
-				var to:Vector3D = Gravitation.player.position;
-				var distance:Number = Vector3D.distance(from, to);
-				if (distance < 1500)
-				{
-					var desiredVelocity:Vector3D = to.subtract(from);
-					desiredVelocity.normalize();
-					desiredVelocity.scaleBy(-speed);
-					gameObject.mover.velocity = desiredVelocity;
-				}
+				var desiredVelocity:Vector3D = gameObject.startPosition.subtract(gameObject.position);
+				desiredVelocity.normalize();
+				desiredVelocity.scaleBy(speed);
+				gameObject.mover.velocity = desiredVelocity;
+			}
+			else
+			{
+				stateMachine.popState();
+				stateMachine.addState(new IdleState(speed));
 			}
 		}
 		

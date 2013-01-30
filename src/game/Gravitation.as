@@ -30,6 +30,8 @@ package game
 		public function Gravitation(numLevel:int)
 		{
 			super(800, 600);
+			camera.addComponent(new FollowObject(null));
+			camera.addComponent(new CameraEase());
 			switch(numLevel)
 			{
 				case 0:
@@ -44,9 +46,10 @@ package game
 				case 3:
 					createFourthLevel();
 					break;
+				case 4:
+					createFifthLevel();
+					break;
 			}
-			camera.addComponent(new FollowObject(null));
-			camera.addComponent(new CameraEase());
 			camera.addComponent(new RestrictToLayer(objectLayer));
 		}
 		
@@ -93,13 +96,13 @@ package game
 		
 		private function createThirdLevel():void
 		{
-			addLayers(1000, 1000);
-			objectLayer.addGameObject(planets[0] = new Planet(null, 60, false), new Vector3D(500, 500));
-			objectLayer.addGameObject(planets[1] = new Planet(planets[0]), new Vector3D(200, 200));
-			objectLayer.addGameObject(planets[2] = new Planet(planets[0]), new Vector3D(800, 800));
-			objectLayer.addGameObject(planets[3] = new Planet(planets[0]), new Vector3D(350, 350));
+			addLayers(1200, 1200);
+			objectLayer.addGameObject(planets[0] = new Planet(null, 60, false), new Vector3D(600, 600));
+			objectLayer.addGameObject(planets[1] = new Planet(planets[0]), new Vector3D(300, 300));
+			objectLayer.addGameObject(planets[2] = new Planet(planets[0]), new Vector3D(900, 900));
+			objectLayer.addGameObject(planets[3] = new Planet(planets[0]), new Vector3D(450, 450));
+			objectLayer.addGameObject(planets[4] = new Planet(planets[0]), new Vector3D(750, 750));
 			planets[3].addComponent(new Teleport(planets[2]));
-			objectLayer.addGameObject(planets[4] = new Planet(planets[0]), new Vector3D(650, 650));
 			addPickup(Pickup, planets[2], 50);
 			addPickup(Pickup, planets[4], 50);
 			addPlayer(planets[1], 60);
@@ -119,6 +122,27 @@ package game
 			addPickup(Pickup, planets[3], 50);
 			addPickup(Pickup, planets[4], 50);
 			addPlayer(planets[5], 60);
+		}
+		
+		private function createFifthLevel():void
+		{
+			addLayers(800, 600);
+			objectLayer.addGameObject(planets[0] = new Planet(null), new Vector3D(150, 300));
+			objectLayer.addGameObject(planets[1] = new Planet(null), new Vector3D(400, 300));
+			objectLayer.addGameObject(planets[2] = new Planet(null), new Vector3D(650, 200));
+			objectLayer.addGameObject(planets[3] = new Planet(null), new Vector3D(650, 400));
+			objectLayer.addGameObject(new Enemy(30), new Vector3D(700, 300));
+			addPickup(ShieldPickup, planets[1], 50);
+			addPickup(Pickup, planets[2], 50);
+			addPickup(Pickup, planets[3], 50);
+			addPlayer(planets[0], 60);
+		}
+		
+		private function createSixthLevel():void
+		{
+			addLayers(800, 600);
+			objectLayer.addGameObject(planets[0] = new Planet(null), new Vector3D(150, 300));
+			addPlayer(planets[0], 60);
 		}
 		
 		private function addLayers(width:Number, height:Number):void 

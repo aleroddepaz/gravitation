@@ -6,13 +6,12 @@ package game.ai
 	import nl.jorisdormans.phantom2D.core.Composite;
 	import nl.jorisdormans.phantom2D.objects.GameObject;
 	
-	public class FleeState extends State 
+	public class IdleState extends State 
 	{
-		
 		private var gameObject:GameObject;
 		private var speed:Number;
 		
-		public function FleeState(speed:Number)
+		public function IdleState(speed:Number)
 		{
 			this.speed = speed;
 		}
@@ -25,17 +24,15 @@ package game.ai
 		
 		override public function update(elapsedTime:Number):void 
 		{
-			if (gameObject.mover && Gravitation.player)
+			if (Gravitation.player)
 			{
 				var from:Vector3D = gameObject.position;
 				var to:Vector3D = Gravitation.player.position;
 				var distance:Number = Vector3D.distance(from, to);
-				if (distance < 1500)
+				if (Vector3D.distance(gameObject.position, Gravitation.player.position) < 300)
 				{
-					var desiredVelocity:Vector3D = to.subtract(from);
-					desiredVelocity.normalize();
-					desiredVelocity.scaleBy(-speed);
-					gameObject.mover.velocity = desiredVelocity;
+					stateMachine.popState();
+					stateMachine.addState(new SeekState(speed));
 				}
 			}
 		}
