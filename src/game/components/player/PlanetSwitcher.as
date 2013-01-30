@@ -1,7 +1,7 @@
 package game.components.player
 {
 	import flash.geom.Vector3D;
-	import game.Planet;
+	import game.gameobjects.Planet;
 	import game.components.player.RotateAroundLinear;
 	import nl.jorisdormans.phantom2D.core.Composite;
 	import nl.jorisdormans.phantom2D.core.InputState;

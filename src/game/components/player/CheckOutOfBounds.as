@@ -1,7 +1,7 @@
 package game.components.player
 {
 	import flash.geom.Vector3D;
-	import game.Checkpoint;
+	import game.gameobjects.Checkpoint;
 	import nl.jorisdormans.phantom2D.objects.GameObjectComponent;
 	
 	public class CheckOutOfBounds extends GameObjectComponent

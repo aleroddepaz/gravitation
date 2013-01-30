@@ -8,9 +8,13 @@ package game.ai
 	
 	public class FleeState extends State 
 	{
+		
+		private var gameObject:GameObject;
+		
 		override public function onAdd(composite:Composite):void 
 		{
 			super.onAdd(composite);
+			this.gameObject = this.stateMachine.parent as GameObject;
 		}
 		
 		override public function update(elapsedTime:Number):void 
@@ -24,7 +28,7 @@ package game.ai
 				{
 					var desiredVelocity:Vector3D = to.subtract(from);
 					desiredVelocity.normalize();
-					desiredVelocity.scaleBy(-5);
+					desiredVelocity.scaleBy(-20);
 					gameObject.mover.velocity = desiredVelocity;
 				}
 			}

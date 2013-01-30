@@ -3,6 +3,8 @@ package game
 	import flash.filters.BlurFilter;
 	import flash.filters.GlowFilter;
 	import flash.geom.Vector3D;
+	import game.components.Teleport;
+	import game.gameobjects.*;
 	import nl.jorisdormans.phantom2D.cameras.CameraEase;
 	import nl.jorisdormans.phantom2D.cameras.FollowObject;
 	import nl.jorisdormans.phantom2D.cameras.RestrictToLayer;
@@ -30,7 +32,7 @@ package game
 			super(width, height);
 			addComponent(new Background(0x888888, 0xaaaaaa, 0x888888));
 			addComponent(particleLayer = new ParticleLayer(width, height, particleLimit));
-			addComponent(objectLayer = new TiledObjectLayer(tileSize, 40, 40, physicsExecutionCount));
+			addComponent(objectLayer = new TiledObjectLayer(tileSize, 20, 15, physicsExecutionCount));
 			//particleLayer.sprite.filters = [new GlowFilter(0x8899dd)];
 			objectLayer.sprite.filters = [new BlurFilter()];
 			camera.addComponent(new FollowObject(null));
@@ -84,7 +86,8 @@ package game
 			objectLayer.addGameObject(planets[0] = new Planet(null, 60, false), new Vector3D(400, 400));
 			objectLayer.addGameObject(planets[1] = new Planet(planets[0]), new Vector3D(200, 200));
 			objectLayer.addGameObject(planets[2] = new Planet(planets[0]), new Vector3D(600, 600));
-			objectLayer.addGameObject(planets[3] = new Teleporter(planets[2], planets[0]), new Vector3D(300, 300));
+			objectLayer.addGameObject(planets[3] = new Planet(planets[0]), new Vector3D(300, 300));
+			planets[3].addComponent(new Teleport(planets[2]));
 			objectLayer.addGameObject(planets[4] = new Planet(planets[0]), new Vector3D(500, 500));
 			addPickup(Pickup, planets[2], 50);
 			addPickup(Pickup, planets[4], 50);

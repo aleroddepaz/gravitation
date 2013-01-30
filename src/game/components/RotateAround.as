@@ -1,7 +1,7 @@
 package game.components
 {
 	import flash.geom.Vector3D;
-	import game.Player;
+	import game.gameobjects.Player;
 	import nl.jorisdormans.phantom2D.core.Phantom;
 	import nl.jorisdormans.phantom2D.objects.GameObject;
 	import nl.jorisdormans.phantom2D.objects.GameObjectComponent;

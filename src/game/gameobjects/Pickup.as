@@ -1,10 +1,10 @@
-package game
+package game.gameobjects
 {
 	import flash.geom.Vector3D;
-	import game.components.ColorParticleEmitter;
-	import game.components.ExplodeOnDestroy;
+	import game.components.particles.ColorParticleEmitter;
+	import game.components.particles.ExplodeOnDestroy;
 	import game.components.RotateAround;
-	import game.components.SfxrSound;
+	import game.components.audio.SfxrSound;
 	import nl.jorisdormans.phantom2D.core.Composite;
 	import nl.jorisdormans.phantom2D.objects.GameObject;
 	import nl.jorisdormans.phantom2D.objects.Mover;

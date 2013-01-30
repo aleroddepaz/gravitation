@@ -1,8 +1,9 @@
-package game
+package game.gameobjects
 {
 	import flash.events.TimerEvent;
 	import flash.geom.Vector3D;
 	import flash.utils.Timer;
+	import game.Gravitation;
 	import game.components.RotateAround;
 	import nl.jorisdormans.phantom2D.core.Composite;
 	import nl.jorisdormans.phantom2D.objects.GameObject;

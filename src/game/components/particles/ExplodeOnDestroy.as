@@ -1,4 +1,4 @@
-package game.components
+package game.components.particles
 {
 	import flash.geom.Vector3D;
 	import nl.jorisdormans.phantom2D.objects.GameObjectComponent;

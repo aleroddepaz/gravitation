@@ -1,13 +1,13 @@
-package game
+package game.gameobjects
 {
 	import flash.geom.Vector3D;
-	import game.components.ColorParticleEmitter;
-	import game.components.ExplodeOnDestroy;
+	import game.components.particles.ColorParticleEmitter;
+	import game.components.particles.ExplodeOnDestroy;
 	import game.components.player.CheckOutOfBounds;
 	import game.components.player.PlanetSwitcher;
 	import game.components.player.PlayerHealth;
 	import game.components.player.RotateAroundLinear;
-	import game.components.SfxrSound;
+	import game.components.audio.SfxrSound;
 	import nl.jorisdormans.phantom2D.objects.GameObject;
 	import nl.jorisdormans.phantom2D.objects.Mover;
 	import nl.jorisdormans.phantom2D.objects.renderers.BoundingShapeRenderer;
@@ -51,7 +51,7 @@ package game
 			super.afterCollisionWith(other);
 			if (other is Enemy)
 			{
-				this.handleMessage("damage", {enemy: other, checkpoint: checkPoint});
+				this.handleMessage("damage", {enemy: other, checkPoint: checkPoint});
 			}
 			else if (!(other is Pickup))
 			{

@@ -1,7 +1,7 @@
-package game
+package game.gameobjects
 {
 	import flash.geom.Vector3D;
-	import game.components.AtmosphereParticleEmitter;
+	import game.components.particles.AtmosphereParticleEmitter;
 	import game.components.RotateAround;
 	import nl.jorisdormans.phantom2D.objects.GameObject;
 	import nl.jorisdormans.phantom2D.objects.Mover;

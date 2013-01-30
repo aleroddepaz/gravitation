@@ -1,9 +1,11 @@
 package game
 {
 	import flash.geom.Vector3D;
-	import game.components.ColorParticleEmitter;
-	import game.components.ExplodeOnDestroy;
+	import game.components.particles.ColorParticleEmitter;
+	import game.components.particles.ExplodeOnDestroy;
 	import game.components.RotateAround;
+	import game.gameobjects.Pickup;
+	import game.gameobjects.Player;
 	import nl.jorisdormans.phantom2D.objects.GameObject;
 	import nl.jorisdormans.phantom2D.objects.renderers.BoundingShapeRenderer;
 	

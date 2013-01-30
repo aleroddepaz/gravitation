@@ -1,6 +1,7 @@
-package game.components
+package game.components.particles
 {
 	import flash.geom.Vector3D;
+	import nl.jorisdormans.phantom2D.core.Phantom;
 	import nl.jorisdormans.phantom2D.objects.GameObjectComponent;
 	import nl.jorisdormans.phantom2D.particles.Particle;
 	import nl.jorisdormans.phantom2D.particles.ParticleLayer;
@@ -29,6 +30,17 @@ package game.components
 			super.readXML(xml);
 			if (xml.@distance.length() > 0) distance = xml.@distance;
 			if (xml.@color.length() > 0) color = xml.@color;
+		}
+		
+		override public function handleMessage(message:String, data:Object = null, componentClass:Class = null):int 
+		{
+			switch(message)
+			{
+				case "setAtmosphereColor":
+					if (data.color) this.color = data.color;
+					return Phantom.MESSAGE_HANDLED;
+			}
+			return super.handleMessage(message, data, componentClass);
 		}
 		
 		override public function update(elapsedTime:Number):void

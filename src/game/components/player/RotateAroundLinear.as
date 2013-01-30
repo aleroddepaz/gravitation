@@ -1,7 +1,7 @@
 package game.components.player
 {
 	import flash.geom.Vector3D;
-	import game.Player;
+	import game.gameobjects.Player;
 	import nl.jorisdormans.phantom2D.core.Phantom;
 	import nl.jorisdormans.phantom2D.objects.GameObject;
 	import nl.jorisdormans.phantom2D.objects.GameObjectComponent;
@@ -79,7 +79,7 @@ package game.components.player
 			distance = Vector3D.distance(gameObject.position, target.position);
 			actualAngle = calculateActualAngle(target.position);
 			rotationSpeed = linearSpeed / distance;
-			target.handleMessage("rotatingAround", gameObject);
+			target.handleMessage("rotatingAround", { player: gameObject } );
 		}
 		
 		private function calculateActualAngle(targetPosition:Vector3D):Number

@@ -1,4 +1,4 @@
-package game.components 
+package game.components.audio 
 {
 	import nl.jorisdormans.phantom2D.core.Phantom;
 	import nl.jorisdormans.phantom2D.objects.GameObjectComponent;
