@@ -1,4 +1,4 @@
-package game.components
+package game.components.player
 {
 	import flash.geom.Vector3D;
 	import game.Checkpoint;

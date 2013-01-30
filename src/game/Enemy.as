@@ -12,11 +12,11 @@ package game
 	
 	public class Enemy extends GameObject 
 	{
-		private static const enemyColor:uint = 0xff3333;
 		
+		private static const enemyColor:uint = 0xff3333;
 		protected var radius:uint;
 		
-		public function Enemy(player:Player, planets:Planet, radius:uint = 16) 
+		public function Enemy(radius:uint = 16) 
 		{
 			this.radius = radius;
 			addComponent(new BoundingCircle(radius));
@@ -24,12 +24,8 @@ package game
 			addComponent(new ColorParticleEmitter(Enemy.enemyColor, 1, 0));
 			addComponent(new ExplodeOnDestroy(Enemy.enemyColor));
 			addComponent(new Mover(new Vector3D()));
-			addComponent(new StateMachine(new SeekState(null)));
+			addComponent(new StateMachine(new SeekState()));
 		}
 		
-		override public function afterCollisionWith(other:GameObject):void 
-		{
-			super.afterCollisionWith(other);
-		}
 	}
 }

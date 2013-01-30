@@ -7,7 +7,12 @@ package game.components
 	
 	public class Teleport extends GameObjectComponent
 	{
-		private var other:GameObject;
+		private var destination:GameObject;
+		
+		public function Teleport(destination:GameObject)
+		{
+			this.destination = destination;
+		}
 		
 		override public function handleMessage(message:String, data:Object = null, componentClass:Class = null):int
 		{
@@ -15,8 +20,6 @@ package game.components
 			{
 				case "rotatingAround": 
 					return teleport(data);
-				case "setDestination": 
-					return setDestination(data);
 			}
 			return 0;
 		}
@@ -29,22 +32,11 @@ package game.components
 				trace("WARNING: Cannot cast GameObject");
 				return Phantom.MESSAGE_NOT_HANDLED;
 			}
-			player.position = other.position.clone().add(player.position.clone().subtract(this.gameObject.position));
-			player.handleMessage("rotate", this.other);
+			player.position = destination.position.clone().add(player.position.clone().subtract(this.gameObject.position));
+			player.handleMessage("rotate", this.destination);
 			gameObject.handleMessage("teleportSound");
 			return Phantom.MESSAGE_HANDLED;
 		}
 		
-		private function setDestination(data:Object):int
-		{
-			var other:GameObject = data as GameObject;
-			if (!other)
-			{
-				trace("WARNING: Cannot cast target object");
-				return Phantom.MESSAGE_NOT_HANDLED;
-			}
-			this.other = other;
-			return Phantom.MESSAGE_HANDLED;
-		}
 	}
 }

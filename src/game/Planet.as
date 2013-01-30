@@ -25,7 +25,7 @@ package game
 			addComponent(new BoundingCircle(radius));
 			addComponent(new BoundingShapeRenderer(Planet.planetColor));
 			addComponent(new Mover(new Vector3D(0, 0), 10, 5));
-			addComponent(new RotateAround(5));
+			addComponent(new RotateAround(0)); // 5));
 			if (this.hasAtmosphere)
 			{
 				addAtmosphere();

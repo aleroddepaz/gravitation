@@ -1,4 +1,4 @@
-package game.components
+package game.components.player
 {
 	import flash.display.Graphics;
 	import nl.jorisdormans.phantom2D.core.Phantom;

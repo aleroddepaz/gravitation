@@ -13,9 +13,9 @@ package game
 	{
 		private var target:Planet;
 		
-		public function Checkpoint(respawnPlanet:Planet) 
+		public function Checkpoint(target:Planet) 
 		{
-			this.target = respawnPlanet;
+			this.target = target;
 			addComponent(new RotateAround(100));
 		}
 		
@@ -41,8 +41,7 @@ package game
 		private function createNewPlayer(event:TimerEvent = null):void
 		{
 			var player:Player = new Player(this);
-			objectLayer.addGameObject(player, position);
-			objectLayer.screen.camera.handleMessage("followObject", {followObject : player});
+			objectLayer.addGameObject(Gravitation.player = player, position);
 		}
 	}
 }

@@ -13,36 +13,86 @@ package game
 	
 	public class Gravitation extends Screen
 	{
-		private var particleLimit:int = 1000;
+		private static const tileSize:int = 40;
+		private static const physicsExecutionCount:int = 4;
+		private static const particleLimit:int = 1000;
+		
 		private var particleLayer:ParticleLayer;
 		private var objectLayer:TiledObjectLayer;
-		
 		private var planets:Vector.<Planet> = new Vector.<Planet>();
 		private var pickups:Vector.<Pickup> = new Vector.<Pickup>();
 		private var checkPoint:Checkpoint;
 		
-		public function Gravitation(width:Number, height:Number)
+		public static var player:Player;
+		
+		public function Gravitation(width:Number, height:Number, numLevel:int)
 		{
 			super(width, height);
 			addComponent(new Background(0x888888, 0xaaaaaa, 0x888888));
 			addComponent(particleLayer = new ParticleLayer(width, height, particleLimit));
-			addComponent(objectLayer = new TiledObjectLayer(40, 30, 30, 4));
-			particleLayer.sprite.filters = [new GlowFilter(0x8899dd)];
+			addComponent(objectLayer = new TiledObjectLayer(tileSize, 40, 40, physicsExecutionCount));
+			//particleLayer.sprite.filters = [new GlowFilter(0x8899dd)];
 			objectLayer.sprite.filters = [new BlurFilter()];
-			
 			camera.addComponent(new FollowObject(null));
 			camera.addComponent(new CameraEase());
 			camera.addComponent(new RestrictToLayer(objectLayer));
+			createThirdLevel();
 			
-			// Galaxy 1
-			objectLayer.addGameObject(planets[0] = new Planet(null, 50, false), new Vector3D(300, 300));
-			objectLayer.addGameObject(planets[1] = new Planet(planets[0]), new Vector3D(200, 200));
-			objectLayer.addGameObject(planets[2] = new Planet(planets[0]), new Vector3D(200, 400));
-			objectLayer.addGameObject(planets[3] = new Planet(planets[0]), new Vector3D(450, 300));
+		}
+		
+		private function addPickup(pickupClass:Class, planet:Planet, distance:Number):void
+		{
+			var position:Vector3D = calculatePosition(planet.position, distance, Math.random() * Math.PI * 2);
+			objectLayer.addGameObject(pickups[pickups.length] = new pickupClass(planet), position);
+		}
+		
+		private function addPlayer(planet:Planet, distance:Number):void
+		{
+			var position:Vector3D = calculatePosition(planet.position, distance, Math.PI / 4);
+			objectLayer.addGameObject(checkPoint = new Checkpoint(planet), position);
+		}
+		
+		private function calculatePosition(position:Vector3D, distance:Number, angle:Number):Vector3D 
+		{
+			var positionX:Number = position.x + distance * Math.cos(angle);
+			var positionY:Number = position.y + distance * Math.sin(angle);
+			return new Vector3D(positionX, positionY)
+		}
+		
+		private function createFirstLevel():void
+		{
+			objectLayer.addGameObject(planets[0] = new Planet(null), new Vector3D(250, 400));
+			objectLayer.addGameObject(planets[1] = new Planet(null), new Vector3D(550, 200));
+			objectLayer.addGameObject(new Enemy(), new Vector3D(50, 50));
+			addPickup(Pickup, planets[1], 60);
+			addPlayer(planets[0], 60);
+		}
+		
+		private function createSecondLevel():void
+		{
+			objectLayer.addGameObject(planets[0] = new Planet(null, 50, false), new Vector3D(400, 300));
+			objectLayer.addGameObject(planets[1] = new Planet(planets[0]), new Vector3D(300, 200));
+			objectLayer.addGameObject(planets[2] = new Planet(planets[0]), new Vector3D(300, 400));
+			objectLayer.addGameObject(planets[3] = new Planet(planets[0]), new Vector3D(550, 300));
 			addPickup(Pickup, planets[2], 60);
 			addPickup(Pickup, planets[3], 60);
-			
-			// Galaxy 2
+			addPlayer(planets[1], 60);
+		}
+		
+		private function createThirdLevel():void
+		{
+			objectLayer.addGameObject(planets[0] = new Planet(null, 60, false), new Vector3D(400, 400));
+			objectLayer.addGameObject(planets[1] = new Planet(planets[0]), new Vector3D(200, 200));
+			objectLayer.addGameObject(planets[2] = new Planet(planets[0]), new Vector3D(600, 600));
+			objectLayer.addGameObject(planets[3] = new Teleporter(planets[2], planets[0]), new Vector3D(300, 300));
+			objectLayer.addGameObject(planets[4] = new Planet(planets[0]), new Vector3D(500, 500));
+			addPickup(Pickup, planets[2], 50);
+			addPickup(Pickup, planets[4], 50);
+			addPlayer(planets[1], 60);
+		}
+		
+		private function createFourthLevel():void
+		{
 			objectLayer.addGameObject(planets[4] = new Planet(null, 50, false), new Vector3D(800, 400));
 			objectLayer.addGameObject(planets[5] = new Planet(planets[4]), new Vector3D(720, 320));
 			objectLayer.addGameObject(planets[6] = new Planet(planets[4]), new Vector3D(880, 320));
@@ -50,23 +100,7 @@ package game
 			objectLayer.addGameObject(planets[8] = new Planet(planets[4]), new Vector3D(880, 480));
 			addPickup(ShieldPickup, planets[6], 50);
 			addPickup(Pickup, planets[7], 50);
-			
-			// Galaxy 3
-			objectLayer.addGameObject(planets[9] = new Planet(null, 50, false), new Vector3D(800, 800));
-			objectLayer.addGameObject(planets[10] = new Teleporter(planets[9]), new Vector3D(800, 700));
-			planets[10].handleMessage("setDestination", planets[1]);
-			
-			objectLayer.addGameObject(checkPoint = new Checkpoint(planets[1]), new Vector3D(150, 150));
-			
 		}
 		
-		private function addPickup(pickupClass:Class, planet:Planet, distance:Number):void
-		{
-			var angle:Number = Math.random() * Math.PI * 2;
-			var positionX:Number = planet.position.x + distance * Math.cos(angle);
-			var positionY:Number = planet.position.y + distance * Math.sin(angle);
-			var index:int = pickups.length;
-			objectLayer.addGameObject(pickups[index] = new pickupClass(planet), new Vector3D(positionX, positionY));
-		}
 	}
 }

@@ -1,7 +1,8 @@
-package game.components
+package game.components.player
 {
 	import flash.geom.Vector3D;
 	import game.Planet;
+	import game.components.player.RotateAroundLinear;
 	import nl.jorisdormans.phantom2D.core.Composite;
 	import nl.jorisdormans.phantom2D.core.InputState;
 	import nl.jorisdormans.phantom2D.objects.GameObject;
@@ -12,12 +13,12 @@ package game.components
 	{
 		private var switchDirection:Vector3D;
 		private var switchSpeed:Number;
-		private var component:RotateAround;
+		private var component:RotateAroundLinear;
 		
 		override public function onAdd(composite:Composite):void
 		{
 			super.onAdd(composite);
-			component = composite.getComponentByClass(RotateAround) as RotateAround;
+			component = composite.getComponentByClass(RotateAroundLinear) as RotateAroundLinear;
 			switchSpeed = component.getLinearSpeed();
 		}
 		
@@ -40,7 +41,7 @@ package game.components
 		private function leavePlanet(target:GameObject):void
 		{
 			gameObject.handleMessage("switchSound");
-			component.handleMessage("rotate", null);
+			component.handleMessage("clear");
 			var newDirection:Vector3D = gameObject.position.subtract(target.position);
 			var tmp:Number = newDirection.x;
 			newDirection.x = newDirection.y;

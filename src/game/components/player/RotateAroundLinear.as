@@ -1,4 +1,4 @@
-package game.components
+package game.components.player
 {
 	import flash.geom.Vector3D;
 	import game.Player;
@@ -6,16 +6,15 @@ package game.components
 	import nl.jorisdormans.phantom2D.objects.GameObject;
 	import nl.jorisdormans.phantom2D.objects.GameObjectComponent;
 	
-	public class RotateAround extends GameObjectComponent
+	public class RotateAroundLinear extends GameObjectComponent
 	{
 		protected var linearSpeed:Number;
-		
 		private var target:GameObject;
-		private var rotationSpeed:Number; // > 0 = clockwise, < 0 = counterclockwise
 		private var distance:Number;
+		private var rotationSpeed:Number;
 		private var actualAngle:Number;
 		
-		public function RotateAround(linearSpeed:Number)
+		public function RotateAroundLinear(linearSpeed:Number)
 		{
 			this.linearSpeed = linearSpeed;
 		}
@@ -60,40 +59,27 @@ package game.components
 			switch (message)
 			{
 				case "rotate": 
-					return setTarget(data);
+					setTarget(data);
+					return Phantom.MESSAGE_HANDLED;
+				case "clear":
+					target = null;
+					return Phantom.MESSAGE_HANDLED;
 			}
 			return Phantom.MESSAGE_NOT_HANDLED;
 		}
 		
-		private function setTarget(targetObject:Object):int
+		private function setTarget(targetObject:Object):void
 		{
-			if (targetObject == null)
-			{
-				target = null;
-				return Phantom.MESSAGE_HANDLED;
-			}
-			else if(gameObject is Player)
-			{
-				gameObject.objectLayer.screen.camera.handleMessage("followObject", {followObject : targetObject});
-			}
 			target = targetObject as GameObject;
 			if (!target)
 			{
-				trace("WARNING: Cannot cast target object");
-				return Phantom.MESSAGE_NOT_HANDLED;
+				return;
 			}
+			gameObject.objectLayer.screen.camera.handleMessage("followObject", {followObject : targetObject});
 			distance = Vector3D.distance(gameObject.position, target.position);
 			actualAngle = calculateActualAngle(target.position);
-			if (linearSpeed != 0)
-			{
-				rotationSpeed = linearSpeed / distance;
-			}
-			else
-			{
-				rotationSpeed = 0.05;
-			}
+			rotationSpeed = linearSpeed / distance;
 			target.handleMessage("rotatingAround", gameObject);
-			return Phantom.MESSAGE_HANDLED;
 		}
 		
 		private function calculateActualAngle(targetPosition:Vector3D):Number
@@ -107,5 +93,6 @@ package game.components
 			}
 			return actualAngle;
 		}
+		
 	}
 }

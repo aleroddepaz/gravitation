@@ -10,7 +10,7 @@ package
 		public function Main()
 		{
 			super(800, 600);
-			addScreen(new Gravitation(800, 600));
+			addScreen(new Gravitation(1000, 1000, 0));
 		}
 	}
 }

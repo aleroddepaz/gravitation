@@ -10,10 +10,10 @@ package game
 		private static const atmosphereColor:uint = 0x33ff33;
 		private static const teleportSound:String = "0,,0.2944,,0.4209,0.2006,,0.2484,,,,,,0.0393,,,,,1,,,,,0.5";
 		
-		public function Teleporter(target:GameObject, radius:uint = 32)
+		public function Teleporter(destination:GameObject, target:GameObject, radius:uint = 32)
 		{
 			super(target, radius, true);
-			addComponent(new Teleport());
+			addComponent(new Teleport(destination));
 			addComponent(new SfxrSound("teleportSound", Teleporter.teleportSound));
 		}
 		
@@ -21,6 +21,7 @@ package game
 		{
 			addComponent(new AtmosphereParticleEmitter(getAtmosphereRadius(), Teleporter.atmosphereColor));
 		}
+		
 	}
 
 }
