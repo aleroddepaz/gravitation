@@ -14,7 +14,7 @@ package game.gameobjects
 	public class Pickup extends GameObject
 	{
 		protected var target:GameObject;
-		private static const pickupColor:uint = 0xffffff;
+		private static const pickupColor:uint = 0x33ff33;
 		private static const pickupSound:String = "2,,0.0343,,0.4288,0.4971,,0.2291,,,,,,,,0.4649,,,1,,,,,0.5";
 		
 		public function Pickup(target:GameObject)
@@ -34,6 +34,7 @@ package game.gameobjects
 		{
 			super.initialize();
 			handleMessage("rotate", target);
+			Main.incrementPickups();
 		}
 		
 		override public function afterCollisionWith(other:GameObject):void

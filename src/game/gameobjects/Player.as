@@ -26,15 +26,15 @@ package game.gameobjects
 		{
 			this.mass = 0;
 			this.checkPoint = checkPoint;
-			addComponent(new PlayerHealth());
-			addComponent(new RotateAroundLinear(linearSpeed));
-			addComponent(new PlanetSwitcher());
 			addComponent(new Mover(new Vector3D(0, 0), 0, 0));
 			addComponent(new BoundingCircle(radius));
 			addComponent(new CheckOutOfBounds(checkPoint));
 			addComponent(new BoundingShapeRenderer(color));
 			addComponent(new ExplodeOnDestroy(Player.particleColor));
 			addComponent(new ColorParticleEmitter(Player.particleColor, 20, 2, 0, 0.4, 10, 0.5));
+			addComponent(new PlayerHealth());
+			addComponent(new RotateAroundLinear(linearSpeed));
+			addComponent(new PlanetSwitcher());
 			addComponent(new SfxrSound("enemyCollisionSound", Player.enemyCollisionSound));
 			addComponent(new SfxrSound("destroySound", Player.destroySound));
 			addComponent(new SfxrSound("enterSound", Player.enterSound));

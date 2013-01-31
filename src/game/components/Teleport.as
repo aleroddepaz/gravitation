@@ -9,7 +9,7 @@ package game.components
 	
 	public class Teleport extends GameObjectComponent
 	{
-		private static const atmosphereColor:uint = 0x33ff33;
+		private static const atmosphereColor:uint = 0xffffff;
 		private static const teleportSound:String = "0,,0.2944,,0.4209,0.2006,,0.2484,,,,,,0.0393,,,,,1,,,,,0.5";
 		
 		private var destination:GameObject;
