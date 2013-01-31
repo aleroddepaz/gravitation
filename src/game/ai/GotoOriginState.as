@@ -1,7 +1,6 @@
 package game.ai 
 {
 	import flash.geom.Vector3D;
-	import nl.jorisdormans.phantom2D.core.Composite;
 	
 	public class GotoOriginState extends GameObjectState 
 	{

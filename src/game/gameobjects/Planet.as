@@ -21,21 +21,20 @@ package game.gameobjects
 		{
 			this.radius = radius;
 			this.target = target;
-			this.hasAtmosphere = hasAtmosphere;
 			addComponent(new BoundingCircle(radius));
 			addComponent(new BoundingShapeRenderer(Planet.planetColor));
 			addComponent(new Mover(new Vector3D(0, 0), 10, 5));
-			addComponent(new RotateAround(0)); // 5));
-			if (this.hasAtmosphere)
+			addComponent(new RotateAround(0.05));
+			if (hasAtmosphere)
 			{
-				addAtmosphere();
+				addComponent(new AtmosphereParticleEmitter(getAtmosphereRadius(), atmosphereColor));
 			}
 		}
 		
 		override public function initialize():void 
 		{
 			super.initialize();
-			handleMessage("rotate", this.target);
+			handleMessage("rotate", { target: target } );
 		}
 		
 		public function getRadius():uint
@@ -54,9 +53,5 @@ package game.gameobjects
 			return hasAtmosphere && distance < getAtmosphereRadius();
 		}
 		
-		public function addAtmosphere():void
-		{
-			addComponent(new AtmosphereParticleEmitter(getAtmosphereRadius(), Planet.atmosphereColor));
-		}
 	}
 }

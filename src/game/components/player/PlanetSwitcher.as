@@ -1,9 +1,8 @@
 package game.components.player
 {
 	import flash.geom.Vector3D;
+	import game.components.RotateAround;
 	import game.gameobjects.Planet;
-	import game.components.player.RotateAroundLinear;
-	import nl.jorisdormans.phantom2D.core.Composite;
 	import nl.jorisdormans.phantom2D.core.InputState;
 	import nl.jorisdormans.phantom2D.objects.GameObject;
 	import nl.jorisdormans.phantom2D.objects.GameObjectComponent;
@@ -11,21 +10,18 @@ package game.components.player
 	
 	public class PlanetSwitcher extends GameObjectComponent implements IInputHandler
 	{
-		private var switchDirection:Vector3D;
-		private var switchSpeed:Number;
-		private var component:RotateAroundLinear;
+		private var linearSpeed:Number;
 		
-		override public function onAdd(composite:Composite):void
+		public function PlanetSwitcher(linearSpeed:Number)
 		{
-			super.onAdd(composite);
-			component = composite.getComponentByClass(RotateAroundLinear) as RotateAroundLinear;
-			switchSpeed = component.getLinearSpeed();
+			this.linearSpeed = linearSpeed;
 		}
 		
 		public function handleInput(elapsedTime:Number, currentState:InputState, previousState:InputState):void
 		{
 			if (currentState.keySpace && !previousState.keySpace)
 			{
+				var component:RotateAround = gameObject.getComponentByClass(RotateAround) as RotateAround;
 				var target:GameObject = component.getTarget();
 				if (target != null)
 				{
@@ -40,15 +36,14 @@ package game.components.player
 		
 		private function leavePlanet(target:GameObject):void
 		{
-			gameObject.handleMessage("switchSound");
-			component.handleMessage("clear");
+			gameObject.handleMessage("switch");
 			var newDirection:Vector3D = gameObject.position.subtract(target.position);
 			var tmp:Number = newDirection.x;
 			newDirection.x = newDirection.y;
 			newDirection.y = tmp;
 			newDirection.y *= -1;
 			newDirection.normalize();
-			newDirection.scaleBy(switchSpeed);
+			newDirection.scaleBy(linearSpeed);
 			gameObject.mover.velocity = newDirection;
 		}
 		
@@ -58,8 +53,9 @@ package game.components.player
 			{
 				if (p.isCloseTo(gameObject.position))
 				{
+					var distance:Number = Vector3D.distance(p.position, gameObject.position);
 					gameObject.mover.velocity = new Vector3D(0, 0);
-					gameObject.handleMessage("rotate", { target: p } );
+					gameObject.handleMessage("rotate", { target: p, speed : linearSpeed / distance } );
 					gameObject.handleMessage("enterSound");
 					return;
 				}

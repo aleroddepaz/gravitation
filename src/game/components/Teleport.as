@@ -1,6 +1,5 @@
 package game.components
 {
-	import game.gameobjects.Player;
 	import nl.jorisdormans.phantom2D.core.Composite;
 	import nl.jorisdormans.phantom2D.core.Phantom;
 	import nl.jorisdormans.phantom2D.objects.GameObject;
@@ -46,8 +45,8 @@ package game.components
 		
 		private function teleport(player:GameObject):void
 		{
-			player.position = destination.position.clone().add(player.position.clone().subtract(gameObject.position));
-			player.handleMessage("rotate", {target : destination});
+			player.position = destination.position.add(player.position.clone().subtract(gameObject.position));
+			player.handleMessage("rotate", { target : destination } );
 		}
 		
 	}

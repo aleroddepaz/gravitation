@@ -1,17 +1,15 @@
 package
 {
-	import flash.events.TimerEvent;
-	import flash.utils.Timer;
-	import game.Gravitation;
-	import nl.jorisdormans.phantom2D.core.PhantomGame;
-	import nl.jorisdormans.phantom2D.core.Screen;
-	import nl.jorisdormans.phantom2D.layers.Background;
+	import flash.events.*;
+	import flash.utils.*;
+	import game.*;
+	import nl.jorisdormans.phantom2D.core.*;
 	
 	public class Main extends PhantomGame
 	{
 		
 		private static var pickups:int = 0;
-		private var currentLevel:int = 4;
+		private var currentLevel:int = 6;
 		
 		public function Main()
 		{

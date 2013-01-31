@@ -1,15 +1,11 @@
 package game.gameobjects
 {
 	import flash.events.TimerEvent;
-	import flash.geom.Vector3D;
 	import flash.utils.Timer;
 	import game.components.audio.SfxrSound;
-	import game.Gravitation;
 	import game.components.RotateAround;
-	import nl.jorisdormans.phantom2D.core.Composite;
+	import game.Gravitation;
 	import nl.jorisdormans.phantom2D.objects.GameObject;
-	import nl.jorisdormans.phantom2D.objects.renderers.BoundingShapeRenderer;
-	import nl.jorisdormans.phantom2D.objects.shapes.BoundingCircle;
 	
 	public class Checkpoint extends GameObject
 	{
@@ -19,14 +15,14 @@ package game.gameobjects
 		public function Checkpoint(target:Planet) 
 		{
 			this.target = target;
-			addComponent(new RotateAround(100));
+			addComponent(new RotateAround(0));
 			addComponent(new SfxrSound("respawnSound", respawnSound));
 		}
 		
 		override public function initialize():void 
 		{
 			super.initialize();
-			handleMessage("rotate", this.target);
+			handleMessage("rotate", { target: target } );
 			var player:Player = new Player(this);
 			objectLayer.addGameObject(Gravitation.player = player, position);
 		}

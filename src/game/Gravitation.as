@@ -10,7 +10,6 @@ package game
 	import nl.jorisdormans.phantom2D.cameras.CameraEase;
 	import nl.jorisdormans.phantom2D.cameras.FollowObject;
 	import nl.jorisdormans.phantom2D.cameras.RestrictToLayer;
-	import nl.jorisdormans.phantom2D.core.Component;
 	import nl.jorisdormans.phantom2D.core.Screen;
 	import nl.jorisdormans.phantom2D.layers.Background;
 	import nl.jorisdormans.phantom2D.objects.TiledObjectLayer;
@@ -74,13 +73,13 @@ package game
 		private function addPickup(planet:Planet, distance:Number):void
 		{
 			var position:Vector3D = calculatePosition(planet.position, distance, Math.random() * Math.PI * 2);
-			objectLayer.addGameObject(pickups[pickups.length] = new Pickup(planet), position);
+			objectLayer.addGameObject(pickups[pickups.length] = new Pickup(planet, distance), position);
 		}
 		
 		private function addShieldPickup(planet:Planet, distance:Number):void
 		{
 			var position:Vector3D = calculatePosition(planet.position, distance, Math.random() * Math.PI * 2);
-			var pickup:Pickup = new Pickup(planet);
+			var pickup:Pickup = new Pickup(planet, distance);
 			pickup.addComponent(new Shield());
 			objectLayer.addGameObject(pickups[pickups.length] = pickup, position);
 		}
@@ -192,18 +191,38 @@ package game
 		
 		private function createSeventhLevel():void
 		{
+			addLayers(800, 600);
+			addPlanet(planets[0] = new Planet(null, 90), 500, 300);
+			addPlanet(planets[1] = new Planet(null), 130, 130);
+			addPlanet(planets[2] = new Planet(planets[1], 16, false), 20, 100);
+			addPlanet(planets[3] = new Planet(null), 130, 470);
+			addPlanet(planets[4] = new Planet(planets[3], 16, false), 100, 580);
+			planets[2].handleMessage("setSpeed", { speed: 1 } );
+			planets[4].handleMessage("setSpeed", { speed: 1 } );
+			addPickup(planets[0], 110);
+			addPlayer(planets[0], 150);
+			addPickup(planets[0], 190);
+			addPickup(planets[0], 230);
+			addPickup(planets[0], 270);
+			addPickup(planets[1], 60);
+			addShieldPickup(planets[3], 60);
+			
+			addEnemy(new Enemy(new IdleState(40)), 130, 300);
 		}
 		
 		private function createEigthLevel():void
 		{
+			addLayers(800, 600);
 		}
 		
 		private function createNinthLevel():void
 		{
+			addLayers(800, 600);
 		}
 		
 		private function createTenthLevel():void
 		{
+			addLayers(800, 600);
 		}
 		
 		private function addLayers(width:Number, height:Number):void 
@@ -211,7 +230,8 @@ package game
 			addComponent(new Background(0x888888, 0xaaaaaa, 0x888888));
 			addComponent(particleLayer = new ParticleLayer(width, height, particleLimit));
 			addComponent(objectLayer = new TiledObjectLayer(tileSize, width / tileSize, height / tileSize, physicsExecutionCount));
-			objectLayer.sprite.filters = [new BlurFilter()];
+			particleLayer.sprite.filters = [new BlurFilter()];
+			objectLayer.sprite.filters = [new GlowFilter(0xffffff)];
 		}
 		
 	}

@@ -8,34 +8,15 @@ package game.components
 	
 	public class RotateAround extends GameObjectComponent
 	{
-		protected var linearSpeed:Number;
+		protected var target:GameObject;
+		protected var rotationSpeed:Number;
 		
-		private var target:GameObject;
-		private var rotationSpeed:Number; // > 0 = clockwise, < 0 = counterclockwise
 		private var distance:Number;
 		private var actualAngle:Number;
 		
-		public function RotateAround(linearSpeed:Number)
+		public function RotateAround(speed:Number)
 		{
-			this.linearSpeed = linearSpeed;
-		}
-		
-		override public function generateXML():XML 
-		{
-			var xml:XML = super.generateXML();
-			xml.@linearSpeed = linearSpeed;
-			return xml;
-		}
-		
-		override public function readXML(xml:XML):void 
-		{
-			super.readXML(xml);
-			if (xml.@linearSpeed.length() > 0) linearSpeed = xml.@linearSpeed;
-		}
-		
-		public function getLinearSpeed():Number
-		{
-			return linearSpeed;
+			this.rotationSpeed = speed;
 		}
 		
 		public function getTarget():GameObject
@@ -47,8 +28,8 @@ package game.components
 		{
 			if (target)
 			{
+				actualAngle = (actualAngle + elapsedTime * rotationSpeed) % (Math.PI * 2);
 				var targetPosition:Vector3D = target.position.clone();
-				this.actualAngle = (actualAngle + elapsedTime * rotationSpeed) % (Math.PI * 2);
 				var newX:Number = targetPosition.x + distance * Math.cos(actualAngle);
 				var newY:Number = targetPosition.y - distance * Math.sin(actualAngle);
 				gameObject.position = new Vector3D(newX, newY);
@@ -59,41 +40,38 @@ package game.components
 		{
 			switch (message)
 			{
-				case "rotate": 
-					return setTarget(data);
+				case "rotate":
+					if (data)
+					{
+						setTarget(data.target);
+						if(data.speed) rotationSpeed = data.speed;
+					}
+					break;
+				case "setSpeed":
+					if (data && data.speed) rotationSpeed = data.speed;
+					break;
+				case "switch":
+					target = null;
+					break;
+				return Phantom.MESSAGE_HANDLED;
 			}
 			return Phantom.MESSAGE_NOT_HANDLED;
 		}
 		
-		private function setTarget(targetObject:Object):int
+		private function setTarget(target:GameObject):void
 		{
-			if (targetObject == null)
+			this.target = target;
+			if (target == null)
 			{
-				target = null;
-				return Phantom.MESSAGE_HANDLED;
-			}
-			else if(gameObject is Player)
-			{
-				gameObject.objectLayer.screen.camera.handleMessage("followObject", {followObject : targetObject});
-			}
-			target = targetObject as GameObject;
-			if (!target)
-			{
-				trace("WARNING: Cannot cast target object");
-				return Phantom.MESSAGE_NOT_HANDLED;
+				return;
 			}
 			distance = Vector3D.distance(gameObject.position, target.position);
 			actualAngle = calculateActualAngle(target.position);
-			if (linearSpeed != 0)
+			if(gameObject is Player)
 			{
-				rotationSpeed = linearSpeed / distance;
+				gameObject.objectLayer.screen.camera.handleMessage("followObject", {followObject : target});
+				target.handleMessage("rotatingAround", { player: gameObject } );
 			}
-			else
-			{
-				rotationSpeed = 0.05;
-			}
-			target.handleMessage("rotatingAround", gameObject);
-			return Phantom.MESSAGE_HANDLED;
 		}
 		
 		private function calculateActualAngle(targetPosition:Vector3D):Number

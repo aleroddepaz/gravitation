@@ -2,9 +2,7 @@ package game.ai
 {
 	import flash.geom.Vector3D;
 	import game.Gravitation;
-	import nl.jorisdormans.phantom2D.core.Composite;
 	import nl.jorisdormans.phantom2D.core.Phantom;
-	import nl.jorisdormans.phantom2D.objects.GameObject;
 	
 	public class SeekState extends GameObjectState 
 	{
