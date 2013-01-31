@@ -3,11 +3,14 @@ package game
 	import flash.filters.BlurFilter;
 	import flash.filters.GlowFilter;
 	import flash.geom.Vector3D;
+	import game.ai.IdleState;
+	import game.components.Shield;
 	import game.components.Teleport;
 	import game.gameobjects.*;
 	import nl.jorisdormans.phantom2D.cameras.CameraEase;
 	import nl.jorisdormans.phantom2D.cameras.FollowObject;
 	import nl.jorisdormans.phantom2D.cameras.RestrictToLayer;
+	import nl.jorisdormans.phantom2D.core.Component;
 	import nl.jorisdormans.phantom2D.core.Screen;
 	import nl.jorisdormans.phantom2D.layers.Background;
 	import nl.jorisdormans.phantom2D.objects.TiledObjectLayer;
@@ -49,15 +52,26 @@ package game
 				case 4:
 					createFifthLevel();
 					break;
+				case 5:
+					createSixthLevel();
+					break;
 			}
 			camera.addComponent(new RestrictToLayer(objectLayer));
 		}
 		
-		private function addPickup(pickupClass:Class, planet:Planet, distance:Number):void
+		private function addPickup(planet:Planet, distance:Number):void
 		{
 			var position:Vector3D = calculatePosition(planet.position, distance, Math.random() * Math.PI * 2);
-			objectLayer.addGameObject(pickups[pickups.length] = new pickupClass(planet), position);
+			objectLayer.addGameObject(pickups[pickups.length] = new Pickup(planet), position);
 			Main.incrementPickups();
+		}
+		
+		private function addShieldPickup(planet:Planet, distance:Number):void
+		{
+			var position:Vector3D = calculatePosition(planet.position, distance, Math.random() * Math.PI * 2);
+			var pickup:Pickup = new Pickup(planet);
+			pickup.addComponent(new Shield());
+			objectLayer.addGameObject(pickups[pickups.length] = pickup, position);
 		}
 		
 		private function addPlayer(planet:Planet, distance:Number):void
@@ -78,7 +92,7 @@ package game
 			addLayers(800, 600);
 			objectLayer.addGameObject(planets[0] = new Planet(null), new Vector3D(250, 400));
 			objectLayer.addGameObject(planets[1] = new Planet(null), new Vector3D(550, 200));
-			addPickup(Pickup, planets[1], 60);
+			addPickup(planets[1], 60);
 			addPlayer(planets[0], 60);
 		}
 		
@@ -89,8 +103,8 @@ package game
 			objectLayer.addGameObject(planets[1] = new Planet(planets[0]), new Vector3D(300, 200));
 			objectLayer.addGameObject(planets[2] = new Planet(planets[0]), new Vector3D(300, 400));
 			objectLayer.addGameObject(planets[3] = new Planet(planets[0]), new Vector3D(550, 300));
-			addPickup(Pickup, planets[2], 60);
-			addPickup(Pickup, planets[3], 60);
+			addPickup(planets[2], 60);
+			addPickup(planets[3], 60);
 			addPlayer(planets[1], 60);
 		}
 		
@@ -103,8 +117,8 @@ package game
 			objectLayer.addGameObject(planets[3] = new Planet(planets[0]), new Vector3D(450, 450));
 			objectLayer.addGameObject(planets[4] = new Planet(planets[0]), new Vector3D(750, 750));
 			planets[3].addComponent(new Teleport(planets[2]));
-			addPickup(Pickup, planets[2], 50);
-			addPickup(Pickup, planets[4], 50);
+			addPickup(planets[2], 50);
+			addPickup(planets[4], 50);
 			addPlayer(planets[1], 60);
 		}
 		
@@ -117,24 +131,24 @@ package game
 			objectLayer.addGameObject(planets[3] = new Planet(planets[0]), new Vector3D(420, 380));
 			objectLayer.addGameObject(planets[4] = new Planet(planets[0]), new Vector3D(580, 380));
 			objectLayer.addGameObject(planets[5] = new Planet(null), new Vector3D(150, 300));
-			addPickup(Pickup, planets[1], 50);
-			addPickup(Pickup, planets[2], 50);
-			addPickup(Pickup, planets[3], 50);
-			addPickup(Pickup, planets[4], 50);
+			addPickup(planets[1], 50);
+			addPickup(planets[2], 50);
+			addPickup(planets[3], 50);
+			addPickup(planets[4], 50);
 			addPlayer(planets[5], 60);
 		}
 		
 		private function createFifthLevel():void
 		{
 			addLayers(800, 600);
-			objectLayer.addGameObject(planets[0] = new Planet(null), new Vector3D(150, 300));
-			objectLayer.addGameObject(planets[1] = new Planet(null), new Vector3D(400, 300));
-			objectLayer.addGameObject(planets[2] = new Planet(null), new Vector3D(650, 200));
-			objectLayer.addGameObject(planets[3] = new Planet(null), new Vector3D(650, 400));
-			objectLayer.addGameObject(new Enemy(30), new Vector3D(700, 300));
-			addPickup(ShieldPickup, planets[1], 50);
-			addPickup(Pickup, planets[2], 50);
-			addPickup(Pickup, planets[3], 50);
+			objectLayer.addGameObject(planets[0] = new Planet(null), new Vector3D(200, 200));
+			objectLayer.addGameObject(planets[1] = new Planet(null), new Vector3D(200, 400));
+			objectLayer.addGameObject(planets[2] = new Planet(null), new Vector3D(600, 200));
+			objectLayer.addGameObject(planets[3] = new Planet(null), new Vector3D(600, 400));
+			objectLayer.addGameObject(new Enemy(new IdleState(30)), new Vector3D(400, 300));
+			addPickup(planets[1], 50);
+			addPickup(planets[2], 50);
+			addPickup(planets[3], 50);
 			addPlayer(planets[0], 60);
 		}
 		
@@ -142,6 +156,13 @@ package game
 		{
 			addLayers(800, 600);
 			objectLayer.addGameObject(planets[0] = new Planet(null), new Vector3D(150, 300));
+			objectLayer.addGameObject(planets[1] = new Planet(null), new Vector3D(400, 300));
+			objectLayer.addGameObject(planets[2] = new Planet(null), new Vector3D(650, 200));
+			objectLayer.addGameObject(planets[3] = new Planet(null), new Vector3D(650, 400));
+			objectLayer.addGameObject(new Enemy(new IdleState(30)), new Vector3D(700, 300));
+			addShieldPickup(planets[1], 50);
+			addPickup(planets[2], 50);
+			addPickup(planets[3], 50);
 			addPlayer(planets[0], 60);
 		}
 		

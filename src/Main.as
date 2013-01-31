@@ -11,7 +11,7 @@ package
 	{
 		
 		private static var pickups:int = 0;
-		private var currentLevel:int = 2;
+		private var currentLevel:int = 5;
 		
 		public function Main()
 		{
@@ -35,7 +35,7 @@ package
 			}
 		}
 		
-		private function loadNewLevel(event:TimerEvent = null):void
+		private function loadNewLevel(event:TimerEvent):void
 		{
 			removeCurrentScreen();
 			addScreen(new Gravitation(++currentLevel));

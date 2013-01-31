@@ -21,18 +21,13 @@ package game.gameobjects
 		{
 			this.mass = 0;
 			this.target = target;
-			this.addColorComponents();
+			addComponent(new BoundingShapeRenderer(pickupColor));
+			addComponent(new ColorParticleEmitter(pickupColor, 8, 1, 0, 0.4, 5, 0.5));
+			addComponent(new ExplodeOnDestroy(pickupColor));
 			addComponent(new BoundingCircle(8));
 			addComponent(new Mover(new Vector3D(0, 0), 0, 0, true));
 			addComponent(new RotateAround(50));
-			addComponent(new SfxrSound("pickupSound", Pickup.pickupSound));
-		}
-		
-		public function addColorComponents():void
-		{
-			addComponent(new BoundingShapeRenderer(Pickup.pickupColor));
-			addComponent(new ColorParticleEmitter(Pickup.pickupColor, 8, 1, 0, 0.4, 5, 0.5));
-			addComponent(new ExplodeOnDestroy(Pickup.pickupColor));
+			addComponent(new SfxrSound("pickupCollected", pickupSound));
 		}
 		
 		override public function initialize():void 
@@ -47,7 +42,7 @@ package game.gameobjects
 			{
 				var game:Main = objectLayer.screen.game as Main;
 				game.updateProgress();
-				handleMessage("pickupSound");
+				handleMessage("pickupCollected", { player: other } );
 				handleMessage("destroy");
 			}
 		}

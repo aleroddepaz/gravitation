@@ -1,6 +1,7 @@
 package game.components.particles
 {
 	import flash.geom.Vector3D;
+	import nl.jorisdormans.phantom2D.core.Phantom;
 	import nl.jorisdormans.phantom2D.objects.GameObjectComponent;
 	import nl.jorisdormans.phantom2D.particles.Particle;
 	import nl.jorisdormans.phantom2D.particles.ParticleLayer;
@@ -18,9 +19,14 @@ package game.components.particles
 		{
 			switch (message)
 			{
+				case "setExplosionColor":
+					if(data && data.color)
+						this.color = data.color;
+					return Phantom.MESSAGE_HANDLED;
 				case "destroy": 
 					explode();
 					gameObject.destroyed = true;
+					return Phantom.MESSAGE_HANDLED;
 			}
 			return super.handleMessage(message, data, componentClass);
 		}

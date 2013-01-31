@@ -23,7 +23,7 @@ package game.components.player
 		private function incrementShield():int
 		{
 			numShields++;
-			gameObject.handleMessage("setRenderStyle", { fillColor: 0x3333ff } );
+			gameObject.handleMessage("setRenderStyle", { fillColor: 0x333366 + 0x22 * numShields } );
 			return Phantom.MESSAGE_HANDLED;
 		}
 		
