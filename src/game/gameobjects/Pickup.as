@@ -4,6 +4,7 @@ package game.gameobjects
 	import game.components.audio.SfxrSound;
 	import game.components.particles.ColorParticleEmitter;
 	import game.components.particles.ExplodeOnDestroy;
+	import game.components.PickupProgress;
 	import game.components.RotateAround;
 	import nl.jorisdormans.phantom2D.objects.GameObject;
 	import nl.jorisdormans.phantom2D.objects.Mover;
@@ -26,22 +27,20 @@ package game.gameobjects
 			addComponent(new BoundingCircle(8));
 			addComponent(new Mover(new Vector3D(0, 0), 0, 0, true));
 			addComponent(new RotateAround(50 / distance));
+			addComponent(new PickupProgress());
 			addComponent(new SfxrSound("pickupCollected", pickupSound));
 		}
 		
-		override public function initialize():void 
+		override public function initialize():void
 		{
 			super.initialize();
 			handleMessage("rotate", { target: target } );
-			Main.incrementPickups();
 		}
 		
 		override public function afterCollisionWith(other:GameObject):void
 		{
 			if (other is Player)
 			{
-				var game:Main = objectLayer.screen.game as Main;
-				game.updateProgress();
 				handleMessage("pickupCollected", { player: other } );
 				handleMessage("destroy");
 			}

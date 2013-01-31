@@ -7,9 +7,9 @@ package
 	
 	public class Main extends PhantomGame
 	{
-		
-		private static var pickups:int = 0;
-		private var currentLevel:int = 6;
+		private static var pickupsCollected:Number = 0;
+		private static var totalPickups:Number = 0;
+		private var currentLevel:int = 0;
 		
 		public function Main()
 		{
@@ -17,15 +17,21 @@ package
 			addScreen(new Gravitation(currentLevel));
 		}
 		
-		public static function incrementPickups():void
+		public static function getProgress():Number
 		{
-			pickups++;
+			if (totalPickups == 0) return 0;
+			return pickupsCollected / totalPickups;
+		}
+		
+		public static function incrementTotalPickups():void
+		{
+			totalPickups++;
 		}
 		
 		public function updateProgress():void
 		{
-			pickups--;
-			if (pickups == 0)
+			pickupsCollected++;
+			if (pickupsCollected == totalPickups)
 			{
 				var timer:Timer = new Timer(1000, 1);
 				timer.addEventListener(TimerEvent.TIMER_COMPLETE, loadNewLevel);
@@ -35,6 +41,8 @@ package
 		
 		private function loadNewLevel(event:TimerEvent):void
 		{
+			pickupsCollected = 0;
+			totalPickups = 0;
 			removeCurrentScreen();
 			addScreen(new Gravitation(++currentLevel));
 		}

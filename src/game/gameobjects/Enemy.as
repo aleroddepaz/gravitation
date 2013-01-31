@@ -29,7 +29,7 @@ package game.gameobjects
 			addComponent(new ExplodeOnDestroy(Enemy.enemyColor));
 			addComponent(new Mover(new Vector3D(0, 0)));
 			addComponent(new StateMachine(state));
-			addComponent(new SfxrSound("destroySound", destroySound));
+			addComponent(new SfxrSound("destroy", destroySound));
 		}
 		
 		override public function afterCollisionWith(other:GameObject):void 

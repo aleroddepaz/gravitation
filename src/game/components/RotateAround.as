@@ -19,9 +19,13 @@ package game.components
 			this.rotationSpeed = speed;
 		}
 		
-		public function getTarget():GameObject
+		override public function getProperty(property:String, data:Object = null, componentClass:Class = null):Object 
 		{
-			return target;
+			if (property == "target")
+			{
+				return target;
+			}
+			return super.getProperty(property, data, componentClass);
 		}
 		
 		override public function update(elapsedTime:Number):void

@@ -21,6 +21,7 @@ package game.gameobjects
 		
 		override public function initialize():void 
 		{
+			getProperty("");
 			super.initialize();
 			handleMessage("rotate", { target: target } );
 			var player:Player = new Player(this);

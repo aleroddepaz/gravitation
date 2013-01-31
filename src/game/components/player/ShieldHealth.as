@@ -5,7 +5,7 @@ package game.components.player
 	import nl.jorisdormans.phantom2D.core.Phantom;
 	import nl.jorisdormans.phantom2D.objects.GameObjectComponent;
 	
-	public class PlayerHealth extends GameObjectComponent
+	public class ShieldHealth extends GameObjectComponent
 	{
 		private static var numShields:uint = 0;
 		
@@ -14,9 +14,12 @@ package game.components.player
 			switch (message)
 			{
 				case "shield": 
-					return incrementShield();
+					incrementShield();
+					break;
 				case "damage": 
-					return receiveDamage(data);
+					receiveDamage(data);
+					break;
+				return Phantom.MESSAGE_HANDLED;
 			}
 			return super.handleMessage(message, data, componentClass);
 		}
@@ -24,35 +27,41 @@ package game.components.player
 		override public function onAdd(composite:Composite):void 
 		{
 			super.onAdd(composite);
-			if(numShields > 0)
-				composite.handleMessage("setRenderStyle", { fillColor: 0x333366 + 0x22 * numShields } );
+			checkRenderStyle();
 		}
 		
-		private function incrementShield():int
+		private function incrementShield():void
 		{
 			numShields++;
-			gameObject.handleMessage("setRenderStyle", { fillColor: 0x000066 + 0x22 * numShields } );
-			return Phantom.MESSAGE_HANDLED;
+			checkRenderStyle();
 		}
 		
-		private function receiveDamage(data:Object):int
+		private function receiveDamage(data:Object):void
 		{
 			if (numShields > 0)
 			{
 				numShields--;
-				if (numShields == 0) gameObject.handleMessage("setRenderStyle", { fillColor: 0x3b3b3b } );
+				checkRenderStyle();
 				data.enemy.handleMessage("destroy");
-				data.enemy.handleMessage("destroySound");
 			}
 			else
 			{
 				data.checkPoint.respawnPlayer();
-				gameObject.handleMessage("enemyCollisionSound");
 				gameObject.handleMessage("destroy");
 			}
-			return Phantom.MESSAGE_HANDLED;
 		}
 		
+		private function checkRenderStyle():void 
+		{
+			if (numShields == 0)
+			{
+				gameObject.handleMessage("setRenderStyle", { fillColor: 0x3b3b3b } );
+			}
+			else if (numShields > 0)
+			{
+				gameObject.handleMessage("setRenderStyle", { fillColor: 0x333366 + 0x22 * numShields } );
+			}
+		}
 	}
 
 }

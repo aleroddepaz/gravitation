@@ -74,6 +74,7 @@ package game
 		{
 			var position:Vector3D = calculatePosition(planet.position, distance, Math.random() * Math.PI * 2);
 			objectLayer.addGameObject(pickups[pickups.length] = new Pickup(planet, distance), position);
+			Main.incrementTotalPickups();
 		}
 		
 		private function addShieldPickup(planet:Planet, distance:Number):void
@@ -232,6 +233,7 @@ package game
 			addComponent(objectLayer = new TiledObjectLayer(tileSize, width / tileSize, height / tileSize, physicsExecutionCount));
 			particleLayer.sprite.filters = [new BlurFilter()];
 			objectLayer.sprite.filters = [new GlowFilter(0xffffff)];
+			addComponent(new Hud());
 		}
 		
 	}

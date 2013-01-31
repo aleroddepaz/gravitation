@@ -11,6 +11,7 @@ package game.components
 		override public function onAdd(composite:Composite):void 
 		{
 			super.onAdd(composite);
+			composite.removeComponent(composite.getComponentByClass(PickupProgress));
 			composite.handleMessage("setRenderStyle", { fillColor: shieldPickupColor } );
 			composite.handleMessage("setExplosionColor", { color: shieldPickupColor } );
 			composite.handleMessage("setParticleColor", { color: shieldPickupColor } );
