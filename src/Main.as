@@ -41,10 +41,13 @@ package
 		
 		private function loadNewLevel(event:TimerEvent):void
 		{
-			pickupsCollected = 0;
-			totalPickups = 0;
-			removeCurrentScreen();
-			addScreen(new Gravitation(++currentLevel));
+			if (currentLevel < 9)
+			{
+				pickupsCollected = 0;
+				totalPickups = 0;
+				removeCurrentScreen();
+				addScreen(new Gravitation(++currentLevel));
+			}
 		}
 	}
 }

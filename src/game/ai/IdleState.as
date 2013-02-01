@@ -18,7 +18,7 @@ package game.ai
 			{
 				if (Vector3D.distance(gameObject.position, Gravitation.player.position) < 300)
 				{
-					stateMachine.addState(new GotoOriginState(speed));
+					stateMachine.addState(new GotoState(speed, gameObject.startPosition));
 					stateMachine.addState(new SeekState(speed));
 				}
 			}

@@ -1,9 +1,11 @@
 package game
 {
+	import flash.display.Graphics;
 	import flash.filters.BlurFilter;
 	import flash.filters.GlowFilter;
 	import flash.geom.Vector3D;
 	import game.ai.IdleState;
+	import game.ai.PatrolState;
 	import game.components.Shield;
 	import game.components.Teleport;
 	import game.gameobjects.*;
@@ -25,6 +27,7 @@ package game
 		private var objectLayer:TiledObjectLayer;
 		private var planets:Vector.<Planet> = new Vector.<Planet>();
 		private var pickups:Vector.<Pickup> = new Vector.<Pickup>();
+		private var enemies:Vector.<Enemy> = new Vector.<Enemy>();
 		private var checkPoint:Checkpoint;
 		
 		public static var player:Player;
@@ -153,7 +156,7 @@ package game
 			addPlanet(planets[1] = new Planet(null), 200, 400);
 			addPlanet(planets[2] = new Planet(null), 600, 200);
 			addPlanet(planets[3] = new Planet(null), 600, 400);
-			addEnemy(new Enemy(new IdleState(30)), 400, 300);
+			addEnemy(enemies[0] = new Enemy(new IdleState(30)), 400, 300);
 			addPickup(planets[1], 60);
 			addPickup(planets[2], 60);
 			addPickup(planets[3], 60);
@@ -167,7 +170,7 @@ package game
 			addPlanet(planets[1] = new Planet(null), 400, 300);
 			addPlanet(planets[2] = new Planet(null), 650, 200);
 			addPlanet(planets[3] = new Planet(null), 650, 400);
-			addEnemy(new Enemy(new IdleState(30)), 700, 300);
+			addEnemy(enemies[0] = new Enemy(new IdleState(30)), 700, 300);
 			addShieldPickup(planets[1], 60);
 			addPickup(planets[2], 60);
 			addPickup(planets[3], 60);
@@ -183,10 +186,12 @@ package game
 			addPlanet(planets[3] = new Planet(planets[0]), 420, 380);
 			addPlanet(planets[4] = new Planet(planets[0]), 580, 380);
 			addPlanet(planets[5] = new Planet(null), 150, 300);
+			
 			addPickup(planets[1], 50);
 			addPickup(planets[2], 50);
 			addPickup(planets[3], 50);
 			addPickup(planets[4], 50);
+			
 			addPlayer(planets[5], 60);
 		}
 		
@@ -200,30 +205,114 @@ package game
 			addPlanet(planets[4] = new Planet(planets[3], 16, false), 100, 580);
 			planets[2].handleMessage("setSpeed", { speed: 1 } );
 			planets[4].handleMessage("setSpeed", { speed: 1 } );
+			
 			addPickup(planets[0], 110);
-			addPlayer(planets[0], 150);
 			addPickup(planets[0], 190);
 			addPickup(planets[0], 230);
 			addPickup(planets[0], 270);
 			addPickup(planets[1], 60);
 			addShieldPickup(planets[3], 60);
 			
-			addEnemy(new Enemy(new IdleState(40)), 130, 300);
+			addEnemy(enemies[0] = new Enemy(new IdleState(40)), 130, 300);
+			
+			addPlayer(planets[0], 150);
 		}
 		
 		private function createEigthLevel():void
 		{
-			addLayers(800, 600);
+			addLayers(900, 700);
+			addPlanet(planets[0] = new Planet(null), 100, 500);
+			addPlanet(planets[1] = new Planet(null, 50), 375, 500);
+			addPlanet(planets[2] = new Planet(null, 30, false), 375, 395);
+			addPlanet(planets[3] = new Planet(null, 50), 700, 500);
+			addPlanet(planets[4] = new Planet(null, 30, false), 595, 500);
+			addPlanet(planets[5] = new Planet(null, 50), 700, 200);
+			addPlanet(planets[6] = new Planet(null, 30, false), 700, 305);
+			addPlanet(planets[7] = new Planet(null), 375, 200);
+			planets[7].addComponent(new Teleport(planets[0]));
+			
+			addPickup(planets[1], 65);
+			addPickup(planets[1], 145);
+			addShieldPickup(planets[3], 65);
+			addPickup(planets[3], 145);
+			addPickup(planets[5], 65);
+			addPickup(planets[5], 145);
+			
+			addEnemy(enemies[0] = new Enemy(new PatrolState(20)), 550, 400);
+			enemies[0].handleMessage("addPatrolPoint", { positionX: 550, positionY: 300 } );
+			enemies[0].handleMessage("addPatrolPoint", { positionX: 450, positionY: 300 } );
+			enemies[0].handleMessage("addPatrolPoint", { positionX: 550, positionY: 400 } );
+			
+			addPlayer(planets[0], 70);
 		}
 		
 		private function createNinthLevel():void
 		{
-			addLayers(800, 600);
+			addLayers(800, 1100);
+			addPlanet(planets[0] = new Planet(null, 50, false), 400, 300);
+			addPlanet(planets[1] = new Planet(planets[0]), 300, 150);
+			addPlanet(planets[2] = new Planet(planets[0]), 250, 300);
+			addPlanet(planets[3] = new Planet(planets[0]), 300, 450);
+			addPlanet(planets[4] = new Planet(planets[0]), 500, 150);
+			addPlanet(planets[5] = new Planet(planets[0]), 500, 450);
+			addPlanet(planets[6] = new Planet(planets[0]), 550, 300);
+			addPlanet(planets[7] = new Planet(null, 20), 400, 650);
+			addPlanet(planets[8] = new Planet(null, 40), 400, 900);
+			planets[8].addComponent(new Teleport(planets[1]));
+			
+			addPickup(planets[2], 60);
+			addShieldPickup(planets[3], 60);
+			addPickup(planets[4], 60);
+			addPickup(planets[5], 60);
+			addShieldPickup(planets[6], 60);
+			addPickup(planets[8], 60);
+			addPickup(planets[8], 100);
+			
+			addEnemy(enemies[0] = new Enemy(new PatrolState(20)), 100, 800);
+			addEnemy(enemies[1] = new Enemy(new PatrolState(20)), 700, 850);
+			enemies[0].handleMessage("addPatrolPoint", { positionX: 100, positionY: 800 } );
+			enemies[0].handleMessage("addPatrolPoint", { positionX: 700, positionY: 800 } );
+			enemies[1].handleMessage("addPatrolPoint", { positionX: 100, positionY: 850 } );
+			enemies[1].handleMessage("addPatrolPoint", { positionX: 700, positionY: 850 } );
+			
+			addPlayer(planets[1], 60);
 		}
 		
 		private function createTenthLevel():void
 		{
 			addLayers(800, 600);
+			addPlanet(planets[0] = new Planet(null, 20), 400, 300);
+			addPlanet(planets[1] = new Planet(null, 20), 525, 300);
+			addPlanet(planets[2] = new Planet(null, 20), 275, 300);
+			addPlanet(planets[3] = new Planet(null, 20), 600, 200);
+			addPlanet(planets[4] = new Planet(null, 20), 200, 200);
+			addPlanet(planets[5] = new Planet(null, 20), 600, 400);
+			addPlanet(planets[6] = new Planet(null, 20), 200, 400);
+			
+			addPlanet(planets[7] = new Planet(null), 400, 100);
+			addPlanet(planets[8] = new Planet(null), 400, 500);
+			addPlanet(planets[9] = new Planet(planets[7], 15, false), 400, 25);
+			addPlanet(planets[10] = new Planet(planets[8], 15, false), 400, 575);
+			planets[9].handleMessage("setSpeed", { speed: 1 } );
+			planets[10].handleMessage("setSpeed", { speed: 1 } );
+			
+			addPickup(planets[1], 30);
+			addPickup(planets[2], 30);
+			addPickup(planets[3], 30);
+			addPickup(planets[4], 30);
+			addPickup(planets[5], 30);
+			addPickup(planets[6], 30);
+			addShieldPickup(planets[7], 45);
+			addShieldPickup(planets[8], 45);
+			
+			addEnemy(enemies[0] = new Enemy(new PatrolState(30)), 100, 100);
+			addEnemy(enemies[1] = new Enemy(new PatrolState(30)), 700, 500);
+			enemies[0].handleMessage("addPatrolPoint", { positionX: 100, positionY: 500 } );
+			enemies[0].handleMessage("addPatrolPoint", { positionX: 100, positionY: 100 } );
+			enemies[1].handleMessage("addPatrolPoint", { positionX: 700, positionY: 100 } );
+			enemies[1].handleMessage("addPatrolPoint", { positionX: 700, positionY: 500 } );
+			
+			addPlayer(planets[0], 40);
 		}
 		
 		private function addLayers(width:Number, height:Number):void 

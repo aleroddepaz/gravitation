@@ -2,27 +2,29 @@ package game.ai
 {
 	import flash.geom.Vector3D;
 	import game.Gravitation;
+	import nl.jorisdormans.phantom2D.core.Phantom;
 	
-	public class PatrolState extends State 
+	public class PatrolState extends GameObjectState
 	{
-		private var positions:Vector.<Vector3D>;
+		private var positions:Vector.<Vector3D> = new Vector.<Vector3D>();
 		private var speed:Number;
 		private var index:int;
 		
-		public function PatrolState(speed:Number, positions:Vector.<Vector3D>)
+		public function PatrolState(speed:Number)
 		{
 			this.speed = speed;
 			this.index = 0;
-			this.positions = positions;
 		}
 		
 		override public function update(elapsedTime:Number):void 
 		{
-			if (Vector3D.distance(Gravitation.player.position, gameObject.position) < 300)
+			if (Gravitation.player != null && Gravitation.player.mover && Vector3D.distance(Gravitation.player.position, gameObject.position) < 200)
 			{
-				stateMachine.addState(new SeekState(speed));
+				stateMachine.addState(new GotoState(speed * 2, positions[index]));
+				stateMachine.addState(new PursuitState(speed * 4));
+				incrementIndex();
 			}
-			else if (Vector3D.distance(gameObject.position, positions[index]) > 0.1)
+			else if (Vector3D.distance(gameObject.position, positions[index]) > 0.5)
 			{
 				var desiredVelocity:Vector3D = positions[index].subtract(gameObject.position);
 				desiredVelocity.normalize();
@@ -31,9 +33,26 @@ package game.ai
 			}
 			else
 			{
-				index++;
-				index %= positions.length;
+				incrementIndex();
 			}
+		}
+		
+		override public function handleMessage(message:String, data:Object = null, componentClass:Class = null):int 
+		{
+			switch (message)
+			{
+				case "addPatrolPoint":
+					if(data && data.positionX && data.positionY)
+						positions.push(new Vector3D(data.positionX, data.positionY));
+					return Phantom.MESSAGE_CONSUMED;
+			}
+			return super.handleMessage(message, data, componentClass);
+		}
+		
+		private function incrementIndex():void 
+		{
+			index++;
+			index %= positions.length;
 		}
 		
 	}
