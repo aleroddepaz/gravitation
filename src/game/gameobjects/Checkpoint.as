@@ -7,6 +7,9 @@ package game.gameobjects
 	import game.Gravitation;
 	import nl.jorisdormans.phantom2D.objects.GameObject;
 	
+	/**
+	 * Respawn point 
+	 */
 	public class Checkpoint extends GameObject
 	{
 		private static const respawnSound:String = "0,0.0088,0.01,0.0124,0.6623,0.5012,,0.4863,0.0002,,0.9072,-0.478,0.1065,0.4206,-0.0296,0.1406,0.0805,0.0761,0.7526,,-0.9351,0.1603,-0.0401,0.5";
@@ -21,7 +24,6 @@ package game.gameobjects
 		
 		override public function initialize():void 
 		{
-			getProperty("");
 			super.initialize();
 			handleMessage("rotate", { target: target } );
 			var player:Player = new Player(this);

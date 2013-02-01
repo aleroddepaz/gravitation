@@ -6,6 +6,9 @@ package game.components.particles
 	import nl.jorisdormans.phantom2D.particles.Particle;
 	import nl.jorisdormans.phantom2D.particles.ParticleLayer;
 	
+	/**
+	 * Component for simulating the explosion of a GameObject
+	 */
 	public class ExplodeOnDestroy extends GameObjectComponent
 	{
 		private var color:uint;
@@ -29,19 +32,6 @@ package game.components.particles
 					return Phantom.MESSAGE_HANDLED;
 			}
 			return super.handleMessage(message, data, componentClass);
-		}
-		
-		override public function generateXML():XML 
-		{
-			var xml:XML = super.generateXML();
-			xml.@color = color;
-			return xml;
-		}
-		
-		override public function readXML(xml:XML):void 
-		{
-			super.readXML(xml);
-			if (xml.@color.length() > 0) color = xml.@color;
 		}
 		
 		private function explode():void

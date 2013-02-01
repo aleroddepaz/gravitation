@@ -7,7 +7,7 @@ package game.components.player
 	
 	public class ShieldHealth extends GameObjectComponent
 	{
-		private static var numShields:uint = 0;
+		public static var numShields:uint = 0;
 		
 		override public function handleMessage(message:String, data:Object = null, componentClass:Class = null):int
 		{

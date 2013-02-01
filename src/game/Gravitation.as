@@ -6,6 +6,7 @@ package game
 	import flash.geom.Vector3D;
 	import game.ai.IdleState;
 	import game.ai.PatrolState;
+	import game.components.player.ShieldHealth;
 	import game.components.Shield;
 	import game.components.Teleport;
 	import game.gameobjects.*;
@@ -14,17 +15,14 @@ package game
 	import nl.jorisdormans.phantom2D.cameras.RestrictToLayer;
 	import nl.jorisdormans.phantom2D.core.Screen;
 	import nl.jorisdormans.phantom2D.layers.Background;
+	import nl.jorisdormans.phantom2D.objects.ObjectLayer;
 	import nl.jorisdormans.phantom2D.objects.TiledObjectLayer;
 	import nl.jorisdormans.phantom2D.particles.ParticleLayer;
 	
 	public class Gravitation extends Screen
 	{
-		private static const tileSize:int = 40;
-		private static const physicsExecutionCount:int = 4;
-		private static const particleLimit:int = 1000;
-		
 		private var particleLayer:ParticleLayer;
-		private var objectLayer:TiledObjectLayer;
+		private var objectLayer:ObjectLayer;
 		private var planets:Vector.<Planet> = new Vector.<Planet>();
 		private var pickups:Vector.<Pickup> = new Vector.<Pickup>();
 		private var enemies:Vector.<Enemy> = new Vector.<Enemy>();
@@ -37,6 +35,7 @@ package game
 			super(800, 600);
 			camera.addComponent(new FollowObject(null));
 			camera.addComponent(new CameraEase());
+			ShieldHealth.numShields = 0;
 			switch(numLevel)
 			{
 				case 0:
@@ -268,12 +267,12 @@ package game
 			addPickup(planets[8], 60);
 			addPickup(planets[8], 100);
 			
-			addEnemy(enemies[0] = new Enemy(new PatrolState(20)), 100, 800);
-			addEnemy(enemies[1] = new Enemy(new PatrolState(20)), 700, 850);
-			enemies[0].handleMessage("addPatrolPoint", { positionX: 100, positionY: 800 } );
-			enemies[0].handleMessage("addPatrolPoint", { positionX: 700, positionY: 800 } );
-			enemies[1].handleMessage("addPatrolPoint", { positionX: 100, positionY: 850 } );
-			enemies[1].handleMessage("addPatrolPoint", { positionX: 700, positionY: 850 } );
+			addEnemy(enemies[0] = new Enemy(new PatrolState(20)), 200, 800);
+			addEnemy(enemies[1] = new Enemy(new PatrolState(20)), 600, 850);
+			enemies[0].handleMessage("addPatrolPoint", { positionX: 200, positionY: 800 } );
+			enemies[0].handleMessage("addPatrolPoint", { positionX: 600, positionY: 800 } );
+			enemies[1].handleMessage("addPatrolPoint", { positionX: 200, positionY: 850 } );
+			enemies[1].handleMessage("addPatrolPoint", { positionX: 600, positionY: 850 } );
 			
 			addPlayer(planets[1], 60);
 		}
@@ -318,8 +317,8 @@ package game
 		private function addLayers(width:Number, height:Number):void 
 		{
 			addComponent(new Background(0x888888, 0xaaaaaa, 0x888888));
-			addComponent(particleLayer = new ParticleLayer(width, height, particleLimit));
-			addComponent(objectLayer = new TiledObjectLayer(tileSize, width / tileSize, height / tileSize, physicsExecutionCount));
+			addComponent(particleLayer = new ParticleLayer(width, height, 1000));
+			addComponent(objectLayer = new ObjectLayer(4, width, height));
 			particleLayer.sprite.filters = [new BlurFilter()];
 			objectLayer.sprite.filters = [new GlowFilter(0xffffff)];
 			addComponent(new Hud());

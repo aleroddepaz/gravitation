@@ -2,6 +2,9 @@ package game.ai
 {
 	import flash.geom.Vector3D;
 	
+	/**
+	 * State for indicating the gameObject's next destination
+	 */
 	public class GotoState extends GameObjectState 
 	{
 		protected var speed:Number;
@@ -17,10 +20,7 @@ package game.ai
 		{
 			if (Vector3D.distance(gameObject.position, destination) > 0.5)
 			{
-				var desiredVelocity:Vector3D = destination.subtract(gameObject.position);
-				desiredVelocity.normalize();
-				desiredVelocity.scaleBy(speed);
-				gameObject.mover.velocity = desiredVelocity;
+				gameObject.mover.velocity = getDesiredVelocity(destination, speed);
 			}
 			else
 			{

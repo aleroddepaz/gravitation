@@ -1,9 +1,11 @@
 package game.ai 
 {
-	import flash.geom.Vector3D;
 	import game.Gravitation;
 	import nl.jorisdormans.phantom2D.core.Phantom;
 	
+	/**
+	 * State for seeking the player
+	 */
 	public class SeekState extends GameObjectState 
 	{
 		private var speed:Number;
@@ -17,10 +19,7 @@ package game.ai
 		{
 			if (Gravitation.player)
 			{
-				var desiredVelocity:Vector3D = Gravitation.player.position.subtract(gameObject.position);
-				desiredVelocity.normalize();
-				desiredVelocity.scaleBy(speed);
-				gameObject.mover.velocity = desiredVelocity;
+				gameObject.mover.velocity = getDesiredVelocity(Gravitation.player.position, speed);
 			}
 			else
 			{

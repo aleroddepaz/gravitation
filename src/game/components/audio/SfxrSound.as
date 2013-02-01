@@ -5,7 +5,8 @@ package game.components.audio
 	import nl.jorisdormans.phantom2D.thirdparty.sfxr.SfxrSynth;
 	
 	/**
-	 * nl.jorisdormans.phantom2D.audio.SfxrSound does not work!!
+	 * Refactored class for Phantom's SfxrSound component
+	 * (nl.jorisdormans.phantom2D.audio.SfxrSound does not work!)
 	 */
 	public class SfxrSound extends GameObjectComponent 
 	{

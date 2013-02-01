@@ -21,8 +21,7 @@ package game.components.player
 		{
 			if (currentState.keySpace && !previousState.keySpace)
 			{
-				var component:RotateAround = gameObject.getComponentByClass(RotateAround) as RotateAround;
-				var target:GameObject = component.getProperty("target") as GameObject;
+				var target:GameObject = gameObject.getProperty("target") as GameObject;
 				if (target != null)
 				{
 					leavePlanet(target);

@@ -4,6 +4,9 @@ package game.ai
 	import game.Gravitation;
 	import nl.jorisdormans.phantom2D.core.Phantom;
 	
+	/**
+	 * State for patrolling among a group of positions
+	 */
 	public class PatrolState extends GameObjectState
 	{
 		private var positions:Vector.<Vector3D> = new Vector.<Vector3D>();
@@ -26,10 +29,7 @@ package game.ai
 			}
 			else if (Vector3D.distance(gameObject.position, positions[index]) > 0.5)
 			{
-				var desiredVelocity:Vector3D = positions[index].subtract(gameObject.position);
-				desiredVelocity.normalize();
-				desiredVelocity.scaleBy(speed);
-				gameObject.mover.velocity = desiredVelocity;
+				gameObject.mover.velocity = getDesiredVelocity(positions[index], speed);
 			}
 			else
 			{

@@ -6,6 +6,9 @@ package game.components.particles
 	import nl.jorisdormans.phantom2D.particles.Particle;
 	import nl.jorisdormans.phantom2D.particles.ParticleLayer;
 	
+	/**
+	 * Circular particle emitter indicating the orbit range
+	 */
 	public class AtmosphereParticleEmitter extends GameObjectComponent
 	{
 		private var distance:Number;
@@ -15,21 +18,6 @@ package game.components.particles
 		{
 			this.distance = distance;
 			this.color = color;
-		}
-		
-		override public function generateXML():XML 
-		{
-			var xml:XML = super.generateXML();
-			xml.@distance = distance;
-			xml.@color = color;
-			return xml;
-		}
-		
-		override public function readXML(xml:XML):void 
-		{
-			super.readXML(xml);
-			if (xml.@distance.length() > 0) distance = xml.@distance;
-			if (xml.@color.length() > 0) color = xml.@color;
 		}
 		
 		override public function handleMessage(message:String, data:Object = null, componentClass:Class = null):int 

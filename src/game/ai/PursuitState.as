@@ -4,6 +4,9 @@ package game.ai
 	import game.Gravitation;
 	import nl.jorisdormans.phantom2D.core.Phantom;
 	
+	/**
+	 * State for pursuiting the player
+	 */
 	public class PursuitState extends GameObjectState 
 	{
 		private var speed:Number;
@@ -18,10 +21,7 @@ package game.ai
 			if (Gravitation.player && Gravitation.player.mover)
 			{
 				var futurePosition:Vector3D = Gravitation.player.position.add(Gravitation.player.mover.velocity);
-				var desiredVelocity:Vector3D = futurePosition.subtract(gameObject.position);
-				desiredVelocity.normalize();
-				desiredVelocity.scaleBy(speed);
-				gameObject.mover.velocity = desiredVelocity;
+				gameObject.mover.velocity = getDesiredVelocity(futurePosition, speed);
 			}
 			else
 			{
